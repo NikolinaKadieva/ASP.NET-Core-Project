@@ -1,6 +1,7 @@
 namespace EstateRentingSystem
 {
     using EstateRentingSystem.Data;
+    using EstateRentingSystem.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -11,15 +12,15 @@ namespace EstateRentingSystem
     public class Startup
     {
         public Startup(IConfiguration configuration)
-            => Configuration = configuration;
+            => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddDbContext<ApplicationDbContext>(options => options
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                .AddDbContext<EstateRentingDbContext>(options => options
+                    .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -31,7 +32,7 @@ namespace EstateRentingSystem
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<EstateRentingDbContext>();
 
             services
                 .AddControllersWithViews();
@@ -39,6 +40,8 @@ namespace EstateRentingSystem
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
