@@ -35,7 +35,7 @@
                 new Category { Name = "One-Room"},
                 new Category { Name = "Two-Rooms"},
                 new Category { Name = "Three-Rooms"},
-                new Category { Name = "Four-Rooms"},
+                new Category { Name = "Multi-Room"},
                 new Category { Name = "House"},
             });
 
