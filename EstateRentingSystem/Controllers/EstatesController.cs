@@ -18,6 +18,26 @@
             Categories = this.GetCategories()
         });
 
+        public IActionResult All()
+        {
+            var estates = this.data
+                .Estates
+                .OrderByDescending(e => e.Id)
+                .Select(e => new EstateListingViewModel
+                {
+                    Id = e.Id,
+                    Type = e.Type,
+                    TypeOfConstruction = e.TypeOfConstruction,
+                    YearOfConstruction = e.YearOfConstruction,
+                    Squaring = e.Squaring,
+                    ImageUrl = e.ImageUrl,
+                    Category = e.Category.Name
+                })
+                .ToList();
+
+            return View(estates);
+        }
+
         [HttpPost]
         public IActionResult Add(AddEstateFormModel estate)
         {
@@ -47,7 +67,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
         private IEnumerable<EstateCategoryViewModel> GetCategories()
