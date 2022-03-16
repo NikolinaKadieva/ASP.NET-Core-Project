@@ -1,0 +1,88 @@
+@model AllEstatesQueryModel
+
+@{
+    ViewData["Title"] = "All Estates";
+}
+
+ <form method="get">
+    <div class="row">
+      <div class="form-group col-md-4">
+              <div class="form-group">
+                <label asp-for="Type"></label>
+                <select asp-for="Type" class="form-control">
+                    <option value="">All</option>
+                    
+                    @foreach (var type in Model.Types)
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Apartment">
+        </div>
+
+        <div class="form-group col-md-4">
+              <div class="form-group">
+                <label asp-for="Sorting"></label>
+                <select asp-for="Sorting" class="form-control">
+                    <option value="0" selected>Date Created</option>
+                    <option value="1">Year</option>
+                    <option value="2">Type</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalEstates / AllEstatesQueryModel.EstatesPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <a 
+            class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)" 
+            asp-controller="Estates" 
+            asp-action="All" 
+            asp-route-currentPage="@previousPage"
+            asp-route-type="@Model.Type"
+            asp-route-searchTerm="@Model.SearchTerm"
+            asp-route-sorting="@((int)Model.Sorting)"><<</a>
+    </div>
+    <div class="col-md-6">
+        <a 
+            class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)" 
+            asp-controller="Estates" 
+            asp-action="All" 
+            asp-route-currentPage="@(Model.CurrentPage + 1)"
+            asp-route-type="@Model.Type"
+            asp-route-searchTerm="@Model.SearchTerm"
+            asp-route-sorting="@((int)Model.Sorting)">>></a>
+
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var estate in Model.Estates)
+    {
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <img class="card-img-top" src="@estate.ImageUrl" alt="@estate.Type @estate.TypeOfConstruction - @estate.YearOfConstruction (@estate.Category)">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@estate.Type - @estate.Category (@estate.YearOfConstruction)</h5>
+                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">View More</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>

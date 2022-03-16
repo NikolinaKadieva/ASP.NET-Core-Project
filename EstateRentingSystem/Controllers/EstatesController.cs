@@ -13,16 +13,36 @@
         public EstatesController(EstateRentingDbContext data)
             => this.data = data;
 
-        public IActionResult Add() => View(new AddEstateFormModel
+        public IActionResult All([FromQuery]AllEstatesQueryModel query)
         {
-            Categories = this.GetCategories()
-        });
+            var estatesQuery = this.data.Estates.AsQueryable();
 
-        public IActionResult All()
-        {
-            var estates = this.data
-                .Estates
-                .OrderByDescending(e => e.Id)
+            if (!string.IsNullOrWhiteSpace(query.Type))
+            {
+                estatesQuery = estatesQuery.Where(e => e.Type == query.Type);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                estatesQuery = estatesQuery.Where(e =>
+                e.Type.ToLower().Contains(query.SearchTerm.ToLower()) || 
+                e.Description.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                e.TypeOfConstruction.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            estatesQuery = query.Sorting switch
+            {
+                
+                EstateSorting.Year => estatesQuery.OrderByDescending(e => e.YearOfConstruction),
+                EstateSorting.Type => estatesQuery.OrderBy(e => e.Type),
+                EstateSorting.DateCreated or _ => estatesQuery.OrderByDescending(e => e.Id)
+            };
+
+            var totalEstates = estatesQuery.Count();
+
+            var estates = estatesQuery
+                .Skip((query.CurrentPage - 1) * AllEstatesQueryModel.EstatesPerPage)
+                .Take(AllEstatesQueryModel.EstatesPerPage)
                 .Select(e => new EstateListingViewModel
                 {
                     Id = e.Id,
@@ -35,8 +55,24 @@
                 })
                 .ToList();
 
-            return View(estates);
+            var estateTypes = this.data
+                .Estates
+                .Select(e => e.Type)
+                .Distinct()
+                .OrderBy(t => t)
+                .ToList();
+
+            query.TotalEstates = totalEstates;
+            query.Types = estateTypes;
+            query.Estates = estates;
+
+            return View(query);
         }
+
+        public IActionResult Add() => View(new AddEstateFormModel
+        {
+            Categories = this.GetCategories()
+        });
 
         [HttpPost]
         public IActionResult Add(AddEstateFormModel estate)
