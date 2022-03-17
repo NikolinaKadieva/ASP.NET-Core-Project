@@ -29,9 +29,9 @@
         [Range(SquaringMinValue, SquaringMaxValue)]
         public int Squaring { get; init; }
 
-        [Display(Name = "Image URL")]
         [Required]
         [Url]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; init; }
 
         [Display(Name = "Category")]

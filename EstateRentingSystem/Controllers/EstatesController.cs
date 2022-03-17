@@ -4,7 +4,9 @@
     using System.Linq;
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
+    using EstateRentingSystem.Infrastructure;
     using EstateRentingSystem.Models.Estates;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     public class EstatesController : Controller
     {
@@ -69,14 +71,35 @@
             return View(query);
         }
 
-        public IActionResult Add() => View(new AddEstateFormModel
+        [Authorize]
+        public IActionResult Add()
         {
-            Categories = this.GetCategories()
-        });
+            if (!this.UserIsDealer())
+            {
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            return View(new AddEstateFormModel
+            {
+                Categories = this.GetCategories()
+            });
+        }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddEstateFormModel estate)
         {
+            var dealerId = this.data
+                .Dealers
+                .Where(d => d.UserId == this.User.GetId())
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (dealerId == 0)
+            {
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
             if (!this.data.Categories.Any(e => e.Id == estate.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(estate.CategoryId), "Category does not exist.");
@@ -96,7 +119,8 @@
                 YearOfConstruction = estate.YearOfConstruction,
                 Squaring = estate.Squaring,
                 ImageUrl = estate.ImageUrl,
-                CategoryId = estate.CategoryId
+                CategoryId = estate.CategoryId,
+                DealerId = dealerId
             };
 
             this.data.Estates.Add(estateData);
@@ -106,6 +130,10 @@
             return RedirectToAction(nameof(All));
         }
 
+        private bool UserIsDealer()
+            => this.data
+                .Dealers
+                .Any(d => d.UserId == this.User.GetId());
         private IEnumerable<EstateCategoryViewModel> GetCategories()
             => this.data
                 .Categories
