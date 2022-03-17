@@ -2,23 +2,30 @@
 {
     public class DataConstants
     {
-        public const int EstateTypeMinLength = 2;
+        public class Estate
+        {
+            public const int TypeMinLength = 2;
+            public const int TypeMaxLength = 20;
+            public const int TypeOfConstructionMinLength = 2;
+            public const int TypeOfConstructionMaxLength = 30;
+            public const int DescriptionMinLength = 10;
+            public const int YearOfConstructionMinValue = 1980;
+            public const int YearOfConstructionMaxValue = 2050;
+            public const int SquaringMinValue = 25;
+            public const int SquaringMaxValue = 500;
+        }
 
-        public const int EstateTypeMaxLength = 20;
+        public class Category
+        {
+            public const int NameMaxLength = 25;
+        }
 
-        public const int EstateTypeOfConstructionMinLength = 2;
-
-        public const int EstateTypeOfConstructionMaxLength = 30;
-
-        public const int EstateDescriptionMinLength = 10;
-
-        public const int EstateYearOfConstructionMinValue = 1980;
-
-        public const int EstateYearOfConstructionMaxValue = 2050;
-
-        public const int EstateSquaringMinValue = 25;
-
-        public const int EstateSquaringMaxValue = 500;
+        public class Dealer
+        {
+            public const int NameMaxLength = 25;
+            public const int PhoneNumberMaxLength = 30;
+        }
+        
         
     }
 }

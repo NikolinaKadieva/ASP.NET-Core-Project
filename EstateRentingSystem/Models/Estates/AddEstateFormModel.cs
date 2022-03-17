@@ -3,30 +3,30 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.Estate;
     public class AddEstateFormModel
     {
         [Required]
-        [StringLength(EstateTypeMaxLength, MinimumLength = EstateTypeMinLength)]
+        [StringLength(TypeMaxLength, MinimumLength = TypeMinLength)]
         public string Type { get; init; }
 
         [Display(Name = "Type of construction")]
         [Required]
-        [StringLength(EstateTypeOfConstructionMaxLength, MinimumLength = EstateTypeOfConstructionMinLength)]
+        [StringLength(TypeOfConstructionMaxLength, MinimumLength = TypeOfConstructionMinLength)]
         public string TypeOfConstruction { get; init; }
 
         [Required]
         [StringLength(
             int.MaxValue,
-            MinimumLength = EstateDescriptionMinLength, 
+            MinimumLength = DescriptionMinLength, 
             ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }
 
         [Display(Name = "Year of construction")]
-        [Range(EstateYearOfConstructionMinValue, EstateYearOfConstructionMaxValue)]
+        [Range(YearOfConstructionMinValue, YearOfConstructionMaxValue)]
         public int YearOfConstruction { get; init; }
 
-        [Range(EstateSquaringMinValue, EstateSquaringMaxValue)]
+        [Range(SquaringMinValue, SquaringMaxValue)]
         public int Squaring { get; init; }
 
         [Display(Name = "Image URL")]

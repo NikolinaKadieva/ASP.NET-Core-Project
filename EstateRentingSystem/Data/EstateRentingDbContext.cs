@@ -1,6 +1,7 @@
 ﻿namespace EstateRentingSystem.Data
 {
     using EstateRentingSystem.Data.Models;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     public class EstateRentingDbContext : IdentityDbContext
@@ -13,13 +14,29 @@
 
         public DbSet<Category> Categories { get; init; }
 
+        public DbSet<Dealer> Dealers { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
                 .Entity<Estate>()
-                .HasOne(c => c.Category)
+                .HasOne(e => e.Category)
                 .WithMany(c => c.Estates)
-                .HasForeignKey(c => c.CategoryId)
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Estate>()
+                .HasOne(e => e.Dealer)
+                .WithMany(d => d.Estates)
+                .HasForeignKey(e => e.DealerId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            builder
+                .Entity<Dealer>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Dealer>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

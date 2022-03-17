@@ -1,18 +1,19 @@
 ﻿namespace EstateRentingSystem.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using static DataConstants;
+
+    using static DataConstants.Estate;
     public class Estate
     {
         public int Id { get; init; }
 
         [Required]
-        [MaxLengthAttribute(EstateTypeMaxLength)]
+        [MaxLengthAttribute(TypeMaxLength)]
         public string Type { get; set; }
         
 
         [Required]
-        [MaxLength(EstateTypeOfConstructionMaxLength)]
+        [MaxLength(TypeOfConstructionMaxLength)]
         public string TypeOfConstruction { get; set; }
 
         [Required]
@@ -29,5 +30,9 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; init; }
+
+        public int DealerId { get; init; }
+
+        public Dealer Dealer { get; init; }
     }
 }
