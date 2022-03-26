@@ -15,6 +15,7 @@
         public IActionResult Index()
         {
             var totalEstates = this.data.Estates.Count();
+            var totalUsers = this.data.Users.Count();
 
             var estates = this.data
                 .Estates
@@ -34,6 +35,7 @@
             return View(new IndexViewModel
             { 
                 TotalEstates = totalEstates,
+                TotalUsers = totalUsers,
                 Estates = estates
             });
         }
