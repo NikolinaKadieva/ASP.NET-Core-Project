@@ -57,17 +57,32 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary d-none" id="statistics-hide-button">Hide Statistics</button>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $('#statistics-button').on('click', ev => {
             $.get('/api/statistics', (data) => {
+                $('#statistics-hide-button').show();
                 $('#total-estates').text(data.totalEstates == 1 ? data.totalEstates + " Estate" : data.totalEstates + " Estates");
                 $('#total-users').text(data.totalUsers == 1 ? data.totalUsers + " User" : data.totalUsers + " Users");
                 $('#total-rents').text(data.totalRents == 1 ? data.totalRents + " Rent" : data.totalRents + " Rents");
 
                 $('#statistics').removeClass('d-none');
                 $('#statistics-button').hide();
+                $('#statistics-hide-button').removeClass('d-none');
+                
             });
         });
+
+        $('#statistics-hide-button').on('click', ev => {
+            $('#statistics').addClass('d-none');
+            $('#statistics-button').show();
+            $('#statistics-hide-button').hide();
+        })
     </script>
 }
