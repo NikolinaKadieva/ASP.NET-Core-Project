@@ -1,6 +1,6 @@
-namespace EstateRentingSystem.Models.Estates
+﻿namespace EstateRentingSystem.Services.Estates
 {
-    public class EstateListingViewModel
+    public class EstateServiceModel
     {
         public int Id { get; init; }
 
@@ -14,6 +14,6 @@ namespace EstateRentingSystem.Models.Estates
 
         public string ImageUrl { get; init; }
 
-        public string Category { get; set; }
+        public string Category { get; init; }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using EstateRentingSystem.Services.Estates;
 
     public class AllEstatesQueryModel
     {
@@ -19,6 +20,6 @@
 
         public IEnumerable<string> Types { get; set; }
 
-        public IEnumerable<EstateListingViewModel> Estates { get; set; }
+        public IEnumerable<EstateServiceModel> Estates { get; set; }
     }
 }

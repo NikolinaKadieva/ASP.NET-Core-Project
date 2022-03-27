@@ -2,6 +2,8 @@ namespace EstateRentingSystem
 {
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Infrastructure;
+    using EstateRentingSystem.Services.Estates;
+    using EstateRentingSystem.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -34,8 +36,10 @@ namespace EstateRentingSystem
                 })
                 .AddEntityFrameworkStores<EstateRentingDbContext>();
 
-            services
-                .AddControllersWithViews();
+            services.AddControllersWithViews();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IEstateService, EstateService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

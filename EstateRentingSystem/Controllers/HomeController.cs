@@ -5,18 +5,23 @@
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Models;
     using EstateRentingSystem.Models.Home;
+    using EstateRentingSystem.Services.Statistics;
     using Microsoft.AspNetCore.Mvc;
     public class HomeController : Controller
     {
+        private readonly IStatisticsService statistics;
         private readonly EstateRentingDbContext data;
 
-        public HomeController(EstateRentingDbContext data)
-            => this.data = data;
+        public HomeController(
+            IStatisticsService statistics,
+            EstateRentingDbContext data)
+        {
+            this.statistics = statistics;
+            this.data = data;
+        }
+
         public IActionResult Index()
         {
-            var totalEstates = this.data.Estates.Count();
-            var totalUsers = this.data.Users.Count();
-
             var estates = this.data
                 .Estates
                 .OrderByDescending(e => e.Id)
@@ -32,10 +37,12 @@
                 .Take(3)
                 .ToList();
 
+            var totalStatistics = this.statistics.Total();
+
             return View(new IndexViewModel
             { 
-                TotalEstates = totalEstates,
-                TotalUsers = totalUsers,
+                TotalEstates = totalStatistics.TotalEstates,
+                TotalUsers = totalStatistics.TotalUsers,
                 Estates = estates
             });
         }

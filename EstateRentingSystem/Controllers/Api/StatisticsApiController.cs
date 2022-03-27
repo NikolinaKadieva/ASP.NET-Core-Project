@@ -1,9 +1,6 @@
 ﻿namespace EstateRentingSystem.Controllers.Api
 {
-
-    using System.Linq;
-    using EstateRentingSystem.Data;
-    using EstateRentingSystem.Models.Api.Statistics;
+    using EstateRentingSystem.Services.Statistics;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -11,23 +8,13 @@
 
     public class StatisticsApiController : ControllerBase
     {
-        private readonly EstateRentingDbContext data;
+        private readonly IStatisticsService statisctics;
 
-        public StatisticsApiController(EstateRentingDbContext data)
-            => this.data = data;
+        public StatisticsApiController(IStatisticsService statisctics)
+            => this.statisctics = statisctics;
 
         [HttpGet]
-        public StatisticsResponseModel GetStatistics()
-        {
-            var totalEstates = this.data.Estates.Count();
-            var totalUsers = this.data.Users.Count();
-
-            return new StatisticsResponseModel
-            {
-                TotalEstates = totalEstates,
-                TotalUsers = totalUsers,
-                TotalRents = 0
-            };
-        }
+        public StatisticsServiceModel GetStatistics() 
+            => this.statisctics.Total();
     }
 }

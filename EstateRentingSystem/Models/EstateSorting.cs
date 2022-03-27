@@ -1,4 +1,4 @@
-﻿namespace EstateRentingSystem.Models.Estates
+﻿namespace EstateRentingSystem.Models
 {
     public enum EstateSorting
     {

@@ -1,6 +1,6 @@
-﻿namespace EstateRentingSystem.Models.Api.Statistics
+﻿namespace EstateRentingSystem.Services.Statistics
 {
-    public class StatisticsResponseModel
+    public class StatisticsServiceModel
     {
         public int TotalEstates { get; init; }
         public int TotalUsers { get; init; }

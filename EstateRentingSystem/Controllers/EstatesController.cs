@@ -6,67 +6,34 @@
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Infrastructure;
     using EstateRentingSystem.Models.Estates;
+    using EstateRentingSystem.Services.Estates;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     public class EstatesController : Controller
     {
+        private readonly IEstateService estates;
         private readonly EstateRentingDbContext data;
 
-        public EstatesController(EstateRentingDbContext data)
-            => this.data = data;
+        public EstatesController(IEstateService estates, EstateRentingDbContext data)
+        {
+            this.estates = estates;
+            this.data = data;
+        }
 
         public IActionResult All([FromQuery]AllEstatesQueryModel query)
         {
-            var estatesQuery = this.data.Estates.AsQueryable();
+            var queryResult = this.estates.All(
+                query.Type,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllEstatesQueryModel.EstatesPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Type))
-            {
-                estatesQuery = estatesQuery.Where(e => e.Type == query.Type);
-            }
+            var estateTypes = this.estates.AllEstateTypes();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                estatesQuery = estatesQuery.Where(e =>
-                e.Type.ToLower().Contains(query.SearchTerm.ToLower()) || 
-                e.Description.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                e.TypeOfConstruction.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            estatesQuery = query.Sorting switch
-            {
-                
-                EstateSorting.Year => estatesQuery.OrderByDescending(e => e.YearOfConstruction),
-                EstateSorting.Type => estatesQuery.OrderBy(e => e.Type),
-                EstateSorting.DateCreated or _ => estatesQuery.OrderByDescending(e => e.Id)
-            };
-
-            var totalEstates = estatesQuery.Count();
-
-            var estates = estatesQuery
-                .Skip((query.CurrentPage - 1) * AllEstatesQueryModel.EstatesPerPage)
-                .Take(AllEstatesQueryModel.EstatesPerPage)
-                .Select(e => new EstateListingViewModel
-                {
-                    Id = e.Id,
-                    Type = e.Type,
-                    TypeOfConstruction = e.TypeOfConstruction,
-                    YearOfConstruction = e.YearOfConstruction,
-                    Squaring = e.Squaring,
-                    ImageUrl = e.ImageUrl,
-                    Category = e.Category.Name
-                })
-                .ToList();
-
-            var estateTypes = this.data
-                .Estates
-                .Select(e => e.Type)
-                .Distinct()
-                .OrderBy(t => t)
-                .ToList();
-
-            query.TotalEstates = totalEstates;
             query.Types = estateTypes;
-            query.Estates = estates;
+            query.TotalEstates = queryResult.TotalEstates;
+            query.Estates = queryResult.Estates;
 
             return View(query);
         }
