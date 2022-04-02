@@ -83,3 +83,10 @@ body {
     height: 75vh;
     overflow: hidden;
 }
+
+#allEstates .card img {
+    object-fit: cover;
+    object-position: center;
+    height: 25vh;
+    overflow: hidden;
+}
