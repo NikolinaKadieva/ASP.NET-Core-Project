@@ -1,0 +1,13 @@
+﻿@model IEnumerable<EstateServiceModel>
+
+@{
+    ViewBag.Title = "My Estates";
+    ViewBag.AllowEstateEdit = true;
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any estates yet!</h2>
+}
+
+<partial name="_EstatesPartial" model="@Model" />

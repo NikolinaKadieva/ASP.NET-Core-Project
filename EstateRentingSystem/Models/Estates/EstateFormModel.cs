@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using EstateRentingSystem.Services.Estates;
 
     using static Data.DataConstants.Estate;
-    public class AddEstateFormModel
+    public class EstateFormModel
     {
         [Required]
         [StringLength(TypeMaxLength, MinimumLength = TypeMinLength)]
@@ -37,6 +38,6 @@
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
-        public IEnumerable<EstateCategoryViewModel> Categories { get; set; }
+        public IEnumerable<EstateCategoryServiceModel> Categories { get; set; }
     }
 }

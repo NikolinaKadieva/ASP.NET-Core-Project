@@ -1,0 +1,22 @@
+﻿@model IEnumerable<EstateServiceModel>
+
+<div id="allEstates" class="row">
+    @foreach (var estate in Model)
+    {
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <img class="card-img-top" src="@estate.ImageUrl" alt="@estate.Type @estate.TypeOfConstruction - @estate.YearOfConstruction (@estate.CategoryName)">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@estate.Type - @estate.CategoryName (@estate.YearOfConstruction)</h5>
+                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">View</a>
+                @if (ViewBag.AllowEstateEdit == true)
+                    {
+                       <a asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
+                       <a asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
+                        
+                    }
+            </div>
+        </div>
+    </div>
+    }
+</div>

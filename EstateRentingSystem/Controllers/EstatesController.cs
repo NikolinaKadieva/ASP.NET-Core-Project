@@ -1,23 +1,23 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using EstateRentingSystem.Data;
-    using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Infrastructure;
     using EstateRentingSystem.Models.Estates;
     using EstateRentingSystem.Services.Estates;
+    using EstateRentingSystem.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
     public class EstatesController : Controller
     {
         private readonly IEstateService estates;
-        private readonly EstateRentingDbContext data;
+        private readonly IDealerService dealers;
 
-        public EstatesController(IEstateService estates, EstateRentingDbContext data)
+        public EstatesController(
+            IEstateService estates,
+            IDealerService dealers)
         {
             this.estates = estates;
-            this.data = data;
+            this.dealers = dealers;
         }
 
         public IActionResult All([FromQuery]AllEstatesQueryModel query)
@@ -29,7 +29,7 @@
                 query.CurrentPage,
                 AllEstatesQueryModel.EstatesPerPage);
 
-            var estateTypes = this.estates.AllEstateTypes();
+            var estateTypes = this.estates.AllTypes();
 
             query.Types = estateTypes;
             query.TotalEstates = queryResult.TotalEstates;
@@ -39,46 +39,81 @@
         }
 
         [Authorize]
+        public IActionResult Mine()
+        {
+            var myEstates = this.estates.ByUser(this.User.Id());
+
+            return View(myEstates);
+        }
+
+        [Authorize]
         public IActionResult Add()
         {
-            if (!this.UserIsDealer())
+            if (!this.dealers.IsDealer(this.User.Id()))
             {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
-            return View(new AddEstateFormModel
+            return View(new EstateFormModel
             {
-                Categories = this.GetCategories()
+                Categories = this.estates.AllCategories()
             });
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddEstateFormModel estate)
+        public IActionResult Add(EstateFormModel estate)
         {
-            var dealerId = this.data
-                .Dealers
-                .Where(d => d.UserId == this.User.GetId())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var dealerId = this.dealers.IdByUser(this.User.Id());
 
             if (dealerId == 0)
             {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
-            if (!this.data.Categories.Any(e => e.Id == estate.CategoryId))
+            if (!this.estates.CategoryExists(estate.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(estate.CategoryId), "Category does not exist.");
             }
             if (!ModelState.IsValid)
             {
-                estate.Categories = this.GetCategories();
+                estate.Categories = this.estates.AllCategories();
 
                 return View(estate);
             }
 
-            var estateData = new Estate
+            this.estates.Create(
+                estate.Type,
+                estate.TypeOfConstruction,
+                estate.Description,
+                estate.YearOfConstruction,
+                estate.Squaring,
+                estate.ImageUrl,
+                estate.CategoryId,
+                dealerId);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.dealers.IsDealer(userId))
+            {
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            var estate = this.estates.Details(id);
+
+            if (estate.UserId != userId) 
+            {
+                return Unauthorized();
+            }
+
+            return View(new EstateFormModel
             {
                 Type = estate.Type,
                 TypeOfConstruction = estate.TypeOfConstruction,
@@ -87,28 +122,48 @@
                 Squaring = estate.Squaring,
                 ImageUrl = estate.ImageUrl,
                 CategoryId = estate.CategoryId,
-                DealerId = dealerId
-            };
+                Categories = this.estates.AllCategories()
+            });
+        }
 
-            this.data.Estates.Add(estateData);
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, EstateFormModel estate)
+        {
+            var dealerId = this.dealers.IdByUser(this.User.Id());
 
-            this.data.SaveChanges();
+            if (dealerId == 0)
+            {
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            if (!this.estates.CategoryExists(estate.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(estate.CategoryId), "Category does not exist.");
+            }
+            if (!ModelState.IsValid)
+            {
+                estate.Categories = this.estates.AllCategories();
+
+                return View(estate);
+            }
+
+            if (!this.estates.IsByDealer(id, dealerId))
+            {
+                return BadRequest();
+            }
+
+            this.estates.Edit(
+                id,
+                estate.Type,
+                estate.TypeOfConstruction,
+                estate.Description,
+                estate.YearOfConstruction,
+                estate.Squaring,
+                estate.ImageUrl,
+                estate.CategoryId);
 
             return RedirectToAction(nameof(All));
         }
-
-        private bool UserIsDealer()
-            => this.data
-                .Dealers
-                .Any(d => d.UserId == this.User.GetId());
-        private IEnumerable<EstateCategoryViewModel> GetCategories()
-            => this.data
-                .Categories
-                .Select(e => new EstateCategoryViewModel
-                {
-                    Id = e.Id,
-                    Name = e.Name
-                })
-                .ToList();
     }
 }

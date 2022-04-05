@@ -12,6 +12,36 @@
             int currentPage,
             int estatesPerPage);
 
-        IEnumerable<string> AllEstateTypes();
+        EstateDetailsServiceModel Details(int estateId);
+
+        int Create(
+            string type,
+            string typeOfConstruction,
+            string description,
+            int yearOfConstruction,
+            int squaring,
+            string imageUrl,
+            int categoryId,
+            int dealerId);
+
+        bool Edit(
+            int estateId,
+            string type,
+            string typeOfConstruction,
+            string description,
+            int yearOfConstruction,
+            int squaring,
+            string imageUrl,
+            int categoryId);
+
+        IEnumerable<EstateServiceModel> ByUser(string userId);
+
+        bool IsByDealer(int estateId, int dealerId);
+
+        IEnumerable<string> AllTypes();
+
+        IEnumerable<EstateCategoryServiceModel> AllCategories();
+
+        bool CategoryExists(int categoryId);
     }
 }

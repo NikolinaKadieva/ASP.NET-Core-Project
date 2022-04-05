@@ -1,5 +1,3 @@
-using System;
-
 namespace EstateRentingSystem.Models
 {
     public class ErrorViewModel

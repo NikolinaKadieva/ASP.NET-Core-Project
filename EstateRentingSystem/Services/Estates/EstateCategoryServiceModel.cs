@@ -1,6 +1,6 @@
-namespace EstateRentingSystem.Models.Estates
+namespace EstateRentingSystem.Services.Estates
 {
-    public class EstateCategoryViewModel
+    public class EstateCategoryServiceModel
     { 
         public int Id { get; init; }
         public string Name { get; init; }

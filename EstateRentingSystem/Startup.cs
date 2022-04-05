@@ -2,6 +2,7 @@ namespace EstateRentingSystem
 {
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Infrastructure;
+    using EstateRentingSystem.Services.Dealers;
     using EstateRentingSystem.Services.Estates;
     using EstateRentingSystem.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
@@ -42,8 +43,9 @@ namespace EstateRentingSystem
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
-            services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IEstateService, EstateService>();
+            services.AddTransient<IDealerService, DealerService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
