@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace EstateRentingSystem.Data.Migrations
+﻿namespace EstateRentingSystem.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
     public partial class CategoryChanged : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

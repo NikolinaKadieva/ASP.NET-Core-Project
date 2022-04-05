@@ -1,6 +1,7 @@
 namespace EstateRentingSystem
 {
     using EstateRentingSystem.Data;
+    using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Infrastructure;
     using EstateRentingSystem.Services.Dealers;
     using EstateRentingSystem.Services.Estates;
@@ -29,13 +30,14 @@ namespace EstateRentingSystem
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<EstateRentingDbContext>();
 
             services.AddControllersWithViews(options =>

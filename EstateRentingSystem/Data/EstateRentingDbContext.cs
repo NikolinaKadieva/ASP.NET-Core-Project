@@ -1,10 +1,9 @@
 ﻿namespace EstateRentingSystem.Data
 {
     using EstateRentingSystem.Data.Models;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    public class EstateRentingDbContext : IdentityDbContext
+    public class EstateRentingDbContext : IdentityDbContext<User>
 {
         public EstateRentingDbContext(DbContextOptions<EstateRentingDbContext> options)
             : base(options)
@@ -34,7 +33,7 @@
 
             builder
                 .Entity<Dealer>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Dealer>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

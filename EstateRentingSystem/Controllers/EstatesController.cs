@@ -101,14 +101,14 @@
         {
             var userId = this.User.Id();
 
-            if (!this.dealers.IsDealer(userId))
+            if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
             var estate = this.estates.Details(id);
 
-            if (estate.UserId != userId) 
+            if (estate.UserId != userId && !User.IsAdmin()) 
             {
                 return Unauthorized();
             }
@@ -132,7 +132,7 @@
         {
             var dealerId = this.dealers.IdByUser(this.User.Id());
 
-            if (dealerId == 0)
+            if (dealerId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
@@ -148,7 +148,7 @@
                 return View(estate);
             }
 
-            if (!this.estates.IsByDealer(id, dealerId))
+            if (!this.estates.IsByDealer(id, dealerId) && !User.IsAdmin())
             {
                 return BadRequest();
             }
