@@ -6,18 +6,22 @@
     using EstateRentingSystem.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using AutoMapper;
 
     public class EstatesController : Controller
     {
         private readonly IEstateService estates;
         private readonly IDealerService dealers;
+        private readonly IMapper mapper;
 
         public EstatesController(
             IEstateService estates,
-            IDealerService dealers)
+            IDealerService dealers,
+            IMapper mapper)
         {
             this.estates = estates;
             this.dealers = dealers;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery]AllEstatesQueryModel query)
@@ -113,17 +117,11 @@
                 return Unauthorized();
             }
 
-            return View(new EstateFormModel
-            {
-                Type = estate.Type,
-                TypeOfConstruction = estate.TypeOfConstruction,
-                Description = estate.Description,
-                YearOfConstruction = estate.YearOfConstruction,
-                Squaring = estate.Squaring,
-                ImageUrl = estate.ImageUrl,
-                CategoryId = estate.CategoryId,
-                Categories = this.estates.AllCategories()
-            });
+            var estateForm = this.mapper.Map<EstateFormModel>(estate);
+
+            estateForm.Categories = this.estates.AllCategories();
+
+            return View(estateForm);
         }
 
         [HttpPost]

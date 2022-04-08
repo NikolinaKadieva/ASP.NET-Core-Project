@@ -2,6 +2,7 @@
 {
     using EstateRentingSystem.Models.Api.Estates;
     using EstateRentingSystem.Services.Estates;
+    using EstateRentingSystem.Services.Estates.Models;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]

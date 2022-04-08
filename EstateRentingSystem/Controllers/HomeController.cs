@@ -2,6 +2,8 @@
 {
     using System.Diagnostics;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Models;
     using EstateRentingSystem.Models.Home;
@@ -10,14 +12,17 @@
     public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
+        private readonly IConfigurationProvider mapper;
         private readonly EstateRentingDbContext data;
 
         public HomeController(
             IStatisticsService statistics,
+            IMapper mapper,
             EstateRentingDbContext data)
         {
             this.statistics = statistics;
-            this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
+            this.data = data;            
         }
 
         public IActionResult Index()
@@ -25,15 +30,7 @@
             var estates = this.data
                 .Estates
                 .OrderByDescending(e => e.Id)
-                .Select(e => new EstateIndexViewModel
-                {
-                    Id = e.Id,
-                    Type = e.Type,
-                    TypeOfConstruction = e.TypeOfConstruction,
-                    YearOfConstruction = e.YearOfConstruction,
-                    Squaring = e.Squaring,
-                    ImageUrl = e.ImageUrl
-                })
+                .ProjectTo<EstateIndexViewModel>(this.mapper)
                 .Take(3)
                 .ToList();
 

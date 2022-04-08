@@ -1,4 +1,4 @@
-﻿namespace EstateRentingSystem.Services.Estates
+﻿namespace EstateRentingSystem.Services.Estates.Models
 {
     public class EstateDetailsServiceModel : EstateServiceModel
     {

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using EstateRentingSystem.Services.Estates;
+    using EstateRentingSystem.Services.Estates.Models;
 
     using static Data.DataConstants.Estate;
     public class EstateFormModel

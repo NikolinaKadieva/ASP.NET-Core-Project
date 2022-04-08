@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using EstateRentingSystem.Models;
+    using EstateRentingSystem.Services.Estates.Models;
 
     public interface IEstateService
     {

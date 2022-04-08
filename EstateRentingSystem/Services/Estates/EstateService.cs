@@ -2,16 +2,23 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Models;
+    using EstateRentingSystem.Services.Estates.Models;
 
     public class EstateService : IEstateService
     {
         private readonly EstateRentingDbContext data;
+        private readonly IConfigurationProvider mapper;
 
-        public EstateService(EstateRentingDbContext data) 
-            => this.data = data;
+        public EstateService(EstateRentingDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
+        }
 
         public EstateQueryServiceModel All(
             string type,
@@ -62,20 +69,7 @@
             => this.data
                 .Estates
                 .Where(e => e.Id == id)
-                .Select(e => new EstateDetailsServiceModel
-                {
-                    Id = e.Id,
-                    Type = e.Type,
-                    TypeOfConstruction = e.TypeOfConstruction,
-                    YearOfConstruction = e.YearOfConstruction,
-                    Description = e.Description,
-                    Squaring = e.Squaring,
-                    ImageUrl = e.ImageUrl,
-                    CategoryName = e.Category.Name,
-                    DealerId = e.DealerId,
-                    DealerName = e.Dealer.Name,
-                    UserId = e.Dealer.UserId
-                })
+                .ProjectTo<EstateDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
 
         public int Create(string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int categoryId, int dealerId)

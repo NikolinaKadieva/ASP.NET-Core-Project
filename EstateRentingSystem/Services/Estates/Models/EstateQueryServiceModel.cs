@@ -1,4 +1,4 @@
-﻿namespace EstateRentingSystem.Services.Estates
+﻿namespace EstateRentingSystem.Services.Estates.Models
 {
     using System.Collections.Generic;
     public class EstateQueryServiceModel
