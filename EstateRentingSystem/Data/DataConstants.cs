@@ -27,6 +27,16 @@
             public const int NameMaxLength = 25;
         }
 
+        public class Furniture
+        {
+            public const int FurnitureTypeMaxLength = 25;
+        }
+
+        public class Animal
+        {
+            public const int AnimalTypeMaxLength = 30;
+        }
+
         public class Dealer
         {
             public const int NameMinLength = 2;

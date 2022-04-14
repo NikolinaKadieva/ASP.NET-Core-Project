@@ -53,6 +53,21 @@
                 new Category { Name = "House"},
             });
 
+            data.Furnitures.AddRange(new[]
+            {
+                new Furniture { Type = "Furniture"},
+                new Furniture { Type = "Unfurniture"},
+            });
+
+            data.Animals.AddRange(new[]
+            {
+                new Animal { Type = "Animals are not allowed"},
+                new Animal { Type = "Allowed cats"},
+                new Animal { Type = "Allowed dogs"},
+                new Animal { Type = "Allowed fish"},
+                new Animal { Type = "Allowed parrots"},
+            });
+
             data.SaveChanges();
         }
 

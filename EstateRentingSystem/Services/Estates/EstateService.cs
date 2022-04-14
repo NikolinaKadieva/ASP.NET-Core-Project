@@ -65,6 +65,14 @@
             };
         }
 
+        public IEnumerable<LatestEstateServiceModel> Latest()
+           => this.data
+               .Estates
+               .OrderByDescending(e => e.Id)
+               .ProjectTo<LatestEstateServiceModel>(this.mapper)
+               .Take(3)
+               .ToList();
+
         public EstateDetailsServiceModel Details(int id)
             => this.data
                 .Estates
@@ -72,7 +80,7 @@
                 .ProjectTo<EstateDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
 
-        public int Create(string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int categoryId, int dealerId)
+        public int Create(string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int furnitureId, int animalId, int categoryId, int dealerId)
         {
             var estateData = new Estate
             {
@@ -82,6 +90,8 @@
                 YearOfConstruction = yearOfConstruction,
                 Squaring = squaring,
                 ImageUrl = imageUrl,
+                FurnitureId = furnitureId,
+                AnimalId = animalId,
                 CategoryId = categoryId,
                 DealerId = dealerId
             };
@@ -93,7 +103,7 @@
             return estateData.Id;
         }
 
-        public bool Edit(int id, string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int categoryId)
+        public bool Edit(int id, string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int furnitureId, int animalId, int categoryId)
         {
             var estateData = this.data.Estates.Find(id);
 
@@ -108,6 +118,8 @@
             estateData.YearOfConstruction = yearOfConstruction;
             estateData.Squaring = squaring;
             estateData.ImageUrl = imageUrl;
+            estateData.FurnitureId = furnitureId;
+            estateData.AnimalId = animalId;
             estateData.CategoryId = categoryId;
 
             this.data.SaveChanges();
@@ -143,10 +155,40 @@
               })
               .ToList();
 
+        public IEnumerable<EstateFurnitureServiceModel> AllFurnitures()
+           => this.data
+             .Furnitures
+             .Select(f => new EstateFurnitureServiceModel
+             {
+                 Id = f.Id,
+                 Type = f.Type
+             })
+             .ToList();
+
+        public IEnumerable<EstateAnimalServiceModel> AllAnimals()
+           => this.data
+             .Animals
+             .Select(a => new EstateAnimalServiceModel
+             {
+                 Id = a.Id,
+                 Type = a.Type
+             })
+             .ToList();
+
         public bool CategoryExists(int categoryId)
             => this.data
                 .Categories
                 .Any(e => e.Id == categoryId);
+
+        public bool AnimalExists(int animalId)
+            => this.data
+                .Animals
+                .Any(a => a.Id == animalId);
+
+        public bool FurnitureExists(int furnitureId)
+            => this.data
+                .Furnitures
+                .Any(f => f.Id == furnitureId);
 
         private static IEnumerable<EstateServiceModel> GetEstates(IQueryable<Estate> estateQuery)
             => estateQuery
@@ -158,6 +200,8 @@
                     YearOfConstruction = e.YearOfConstruction,
                     Squaring = e.Squaring,
                     ImageUrl = e.ImageUrl,
+                    FurnitureType = e.Furniture.Type,
+                    AnimalType = e.Animal.Type,
                     CategoryName = e.Category.Name
                 })
                 .ToList();

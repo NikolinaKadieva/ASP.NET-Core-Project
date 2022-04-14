@@ -14,6 +14,10 @@
 
         public string ImageUrl { get; init; }
 
+        public string FurnitureType { get; init; }
+
+        public string AnimalType { get; init; }
+
         public string CategoryName { get; init; }
     }
 }

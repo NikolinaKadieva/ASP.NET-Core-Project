@@ -13,6 +13,7 @@
             int currentPage,
             int estatesPerPage);
 
+        IEnumerable<LatestEstateServiceModel> Latest();
         EstateDetailsServiceModel Details(int estateId);
 
         int Create(
@@ -22,6 +23,8 @@
             int yearOfConstruction,
             int squaring,
             string imageUrl,
+            int furnitureId,
+            int animalId,
             int categoryId,
             int dealerId);
 
@@ -33,6 +36,8 @@
             int yearOfConstruction,
             int squaring,
             string imageUrl,
+            int furnitureId,
+            int animalId,
             int categoryId);
 
         IEnumerable<EstateServiceModel> ByUser(string userId);
@@ -42,7 +47,11 @@
         IEnumerable<string> AllTypes();
 
         IEnumerable<EstateCategoryServiceModel> AllCategories();
+        IEnumerable<EstateFurnitureServiceModel> AllFurnitures();
+        IEnumerable<EstateAnimalServiceModel> AllAnimals();
 
         bool CategoryExists(int categoryId);
+        bool FurnitureExists(int furnitureId);
+        bool AnimalExists(int animalId);
     }
 }

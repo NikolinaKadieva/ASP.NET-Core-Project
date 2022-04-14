@@ -8,7 +8,7 @@
         public int Id { get; init; }
 
         [Required]
-        [MaxLengthAttribute(TypeMaxLength)]
+        [MaxLength(TypeMaxLength)]
         public string Type { get; set; }
         
 
@@ -26,6 +26,14 @@
 
         [Required]
         public string ImageUrl { get; set; }
+
+        public int FurnitureId { get; set; }
+
+        public Furniture Furniture { get; init; }
+
+        public int AnimalId { get; set; }
+
+        public Animal Animal { get; init; }
 
         public int CategoryId { get; set; }
 

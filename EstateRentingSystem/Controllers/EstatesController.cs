@@ -60,7 +60,9 @@
 
             return View(new EstateFormModel
             {
-                Categories = this.estates.AllCategories()
+                Categories = this.estates.AllCategories(),
+                Furnitures = this.estates.AllFurnitures(),
+                Animals = this.estates.AllAnimals()
             });
         }
 
@@ -86,6 +88,28 @@
                 return View(estate);
             }
 
+            if (!this.estates.FurnitureExists(estate.FurnitureId))
+            {
+                this.ModelState.AddModelError(nameof(estate.FurnitureId), "Furniture does not exist.");
+            }
+            if (!ModelState.IsValid)
+            {
+                estate.Furnitures = this.estates.AllFurnitures();
+
+                return View(estate);
+            }
+
+            if (!this.estates.AnimalExists(estate.AnimalId))
+            {
+                this.ModelState.AddModelError(nameof(estate.AnimalId), "Animal does not exist.");
+            }
+            if (!ModelState.IsValid)
+            {
+                estate.Animals = this.estates.AllAnimals();
+
+                return View(estate);
+            }
+
             this.estates.Create(
                 estate.Type,
                 estate.TypeOfConstruction,
@@ -93,6 +117,8 @@
                 estate.YearOfConstruction,
                 estate.Squaring,
                 estate.ImageUrl,
+                estate.FurnitureId,
+                estate.AnimalId,
                 estate.CategoryId,
                 dealerId);
 
@@ -119,7 +145,11 @@
 
             var estateForm = this.mapper.Map<EstateFormModel>(estate);
 
-            estateForm.Categories = this.estates.AllCategories();
+            estateForm.Furnitures = this.estates.AllFurnitures();
+
+            estateForm.Animals = this.estates.AllAnimals();
+
+            estateForm.Categories = this.estates.AllCategories();          
 
             return View(estateForm);
         }
@@ -143,6 +173,10 @@
             {
                 estate.Categories = this.estates.AllCategories();
 
+                estate.Furnitures = this.estates.AllFurnitures();
+
+                estate.Animals = this.estates.AllAnimals();
+
                 return View(estate);
             }
 
@@ -159,6 +193,8 @@
                 estate.YearOfConstruction,
                 estate.Squaring,
                 estate.ImageUrl,
+                estate.FurnitureId,
+                estate.AnimalId,
                 estate.CategoryId);
 
             return RedirectToAction(nameof(All));

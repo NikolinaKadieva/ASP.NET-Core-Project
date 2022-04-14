@@ -35,6 +35,16 @@
         [Display(Name = "Image URL")]
         public string ImageUrl { get; init; }
 
+        [Display(Name = "Type of furniture")]
+        public int FurnitureId { get; init; }
+
+        public IEnumerable<EstateFurnitureServiceModel> Furnitures { get; set; }
+
+        [Display(Name = "Allowed animals")]
+        public int AnimalId { get; init; }
+
+        public IEnumerable<EstateAnimalServiceModel> Animals { get; set; }
+
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
