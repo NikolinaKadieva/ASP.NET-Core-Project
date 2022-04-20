@@ -1,36 +1,44 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
-    using EstateRentingSystem.Models.Home;
     using EstateRentingSystem.Services.Estates;
-    using EstateRentingSystem.Services.Statistics;
+    using EstateRentingSystem.Services.Estates.Models;
     using Microsoft.AspNetCore.Mvc;
-    
+    using Microsoft.Extensions.Caching.Memory;
+
     public class HomeController : Controller
     {
         private readonly IEstateService estates;
-        private readonly IStatisticsService statistics;
+        private readonly IMemoryCache cache;
 
         public HomeController(
             IEstateService estates,
-            IStatisticsService statistics)
+            IMemoryCache cache)
         {
             this.estates = estates;
-            this.statistics = statistics;
+            this.cache = cache;
         }
 
         public IActionResult Index()
         {
-            var latestEstates = this.estates.Latest().ToList();
+            const string LatestEstatesCacheKey = "LatesteEstatesCacheKey";
 
-            var totalStatistics = this.statistics.Total();
+            var latestEstates = this.cache.Get<List<LatestEstateServiceModel>>(LatestEstatesCacheKey);
 
-            return View(new IndexViewModel
+            if (latestEstates == null)
             {
-                TotalEstates = totalStatistics.TotalEstates,
-                TotalUsers = totalStatistics.TotalUsers,
-                Estates = latestEstates
-            });
+                latestEstates = this.estates
+                    .Latest()
+                    .ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(System.TimeSpan.FromMinutes(15));
+
+                this.cache.Set(LatestEstatesCacheKey, latestEstates, cacheOptions);
+            }
+
+            return View(latestEstates);
         }
 
         public IActionResult Error() => View();

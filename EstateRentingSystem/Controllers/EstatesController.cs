@@ -1,12 +1,14 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
-    using EstateRentingSystem.Infrastructure;
+    using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Models.Estates;
     using EstateRentingSystem.Services.Estates;
     using EstateRentingSystem.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using AutoMapper;
+
+    using static WebConstants;
 
     public class EstatesController : Controller
     {
@@ -48,6 +50,18 @@
             var myEstates = this.estates.ByUser(this.User.Id());
 
             return View(myEstates);
+        }
+
+        public IActionResult Details(int id, string information)
+        {
+            var estate = this.estates.Details(id);
+
+            if (information != estate.GetInformation())
+            {
+                return BadRequest();
+            }
+
+            return View(estate);
         }
 
         [Authorize]
@@ -110,7 +124,7 @@
                 return View(estate);
             }
 
-            this.estates.Create(
+            var estateId = this.estates.Create(
                 estate.Type,
                 estate.TypeOfConstruction,
                 estate.Description,
@@ -122,11 +136,12 @@
                 estate.CategoryId,
                 dealerId);
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "Your estate was saved successfully and is waiting to be approve by administrator!";
+
+            return RedirectToAction(nameof(Details), new {id = estateId, information = estate.GetInformation()});
         }
 
         [Authorize]
-
         public IActionResult Edit(int id)
         {
             var userId = this.User.Id();
@@ -195,9 +210,12 @@
                 estate.ImageUrl,
                 estate.FurnitureId,
                 estate.AnimalId,
-                estate.CategoryId);
+                estate.CategoryId,
+                this.User.IsAdmin());
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = $"{(this.User.IsAdmin() ? "The estate is edited successfully!" : "Your estate was edited successfully and is waiting to be approve by administrator!")}";
+
+            return RedirectToAction(nameof(Details), new { id, information = estate.GetInformation() });
         }
     }
 }

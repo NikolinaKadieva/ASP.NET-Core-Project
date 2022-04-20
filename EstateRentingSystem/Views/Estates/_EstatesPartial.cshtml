@@ -8,7 +8,7 @@
             <img class="card-img-top img-fluid card-image rounded" data-togg="toleoltip" data-placement="bottom" title="In this estate are @estate.AnimalType and this estate is @estate.FurnitureType" src="@estate.ImageUrl" alt="@estate.Type @estate.TypeOfConstruction - @estate.YearOfConstruction (@estate.CategoryName)">
             <div class="card-body text-center">
                 <h5 class="card-title text-center">@estate.Type - @estate.CategoryName (@estate.YearOfConstruction)</h5>
-                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">View</a>
+                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" asp-route-information="@estate.GetInformation()" class="btn btn-primary">View</a>
                 @if (ViewBag.AllowEstateEdit == true || User.IsAdmin())
                     {
                        <a asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>

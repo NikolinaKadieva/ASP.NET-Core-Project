@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EstateServiceModel>
+
+@{
+    ViewBag.Title = "Estates Administration";
+}
+
+<h1>All Estates</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Type</th>
+      <th scope="col">Type Of Construction</th>
+      <th scope="col">Year Of Construction</th>
+      <th scope="col">Squaring</th>
+      <th scope="col">Furniture</th>
+      <th scope="col">Animal</th>
+      <th scope="col">Category</th>
+      <th scope="col">Approved</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var estate in Model)
+    {
+        <tr>    
+            <td scope="col">@estate.Id</td>
+            <td scope="col">@estate.Type</td>
+            <td scope="col">@estate.TypeOfConstruction</td>
+            <td scope="col">@estate.YearOfConstruction</td>
+            <td scope="col">@estate.Squaring</td>
+            <td scope="col">@estate.FurnitureType</td>
+            <td scope="col">@estate.AnimalType</td>
+            <td scope="col">@estate.CategoryName</td>
+            <td scope="col">@(estate.IsPublic ? "Yes" : "No")</td>
+            <td scope="col">
+                <a asp-area="Admin" asp-controller="Estates" asp-action="ChangeVisibility" asp-route-id="@estate.Id" class="btn btn-info float-right ml-3 mb-3">@(estate.IsPublic ? "Hide" : "Show")</a>
+                <a asp-area="" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" asp-route-information="@estate.GetInformation()" class="btn btn-primary float-right ml-3 mb-3">View</a>
+                <a asp-area="" asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger float-right ml-3 mb-3">Delete</a>
+                <a asp-area="" asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning float-right ml-3 mb-3">Edit</a>
+                
+            </td>
+        </tr>
+    }
+  </tbody>
+</table>

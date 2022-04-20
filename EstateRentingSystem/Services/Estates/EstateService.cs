@@ -21,13 +21,15 @@
         }
 
         public EstateQueryServiceModel All(
-            string type,
-            string searchTerm,
-            EstateSorting sorting,
-            int currentPage,
-            int estatesPerPage)
+            string type = null,
+            string searchTerm = null,
+            EstateSorting sorting = EstateSorting.DateCreated,
+            int currentPage = 1,
+            int estatesPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
-            var estatesQuery = this.data.Estates.AsQueryable();
+            var estatesQuery = this.data.Estates
+                .Where(e => publicOnly ? e.IsPublic : true);
 
             if (!string.IsNullOrWhiteSpace(type))
             {
@@ -68,6 +70,7 @@
         public IEnumerable<LatestEstateServiceModel> Latest()
            => this.data
                .Estates
+               .Where(e => e.IsPublic)
                .OrderByDescending(e => e.Id)
                .ProjectTo<LatestEstateServiceModel>(this.mapper)
                .Take(3)
@@ -93,7 +96,8 @@
                 FurnitureId = furnitureId,
                 AnimalId = animalId,
                 CategoryId = categoryId,
-                DealerId = dealerId
+                DealerId = dealerId,
+                IsPublic = false
             };
 
             this.data.Estates.Add(estateData);
@@ -103,7 +107,17 @@
             return estateData.Id;
         }
 
-        public bool Edit(int id, string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int furnitureId, int animalId, int categoryId)
+        public bool Edit(
+            int id,
+            string type, 
+            string typeOfConstruction,
+            string description,
+            int yearOfConstruction, 
+            int squaring, string imageUrl,
+            int furnitureId,
+            int animalId, 
+            int categoryId,
+            bool isPublic)
         {
             var estateData = this.data.Estates.Find(id);
 
@@ -121,6 +135,7 @@
             estateData.FurnitureId = furnitureId;
             estateData.AnimalId = animalId;
             estateData.CategoryId = categoryId;
+            estateData.IsPublic = isPublic;
 
             this.data.SaveChanges();
 
@@ -137,6 +152,15 @@
                 .Estates
                 .Any(e => e.Id == estateId && e.DealerId == dealerId);
 
+        public void ChangeVisibility(int estateId)
+        {
+            var estate = this.data.Estates.Find(estateId);
+
+            estate.IsPublic = !estate.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
         public IEnumerable<string> AllTypes()
             => this.data
                 .Estates
@@ -148,11 +172,7 @@
         public IEnumerable<EstateCategoryServiceModel> AllCategories()
             => this.data
               .Categories
-              .Select(e => new EstateCategoryServiceModel
-              {
-                  Id = e.Id,
-                  Name = e.Name
-              })
+              .ProjectTo<EstateCategoryServiceModel>(this.mapper)
               .ToList();
 
         public IEnumerable<EstateFurnitureServiceModel> AllFurnitures()
@@ -190,20 +210,9 @@
                 .Furnitures
                 .Any(f => f.Id == furnitureId);
 
-        private static IEnumerable<EstateServiceModel> GetEstates(IQueryable<Estate> estateQuery)
+        private IEnumerable<EstateServiceModel> GetEstates(IQueryable<Estate> estateQuery)
             => estateQuery
-                .Select(e => new EstateServiceModel
-                {
-                    Id = e.Id,
-                    Type = e.Type,
-                    TypeOfConstruction = e.TypeOfConstruction,
-                    YearOfConstruction = e.YearOfConstruction,
-                    Squaring = e.Squaring,
-                    ImageUrl = e.ImageUrl,
-                    FurnitureType = e.Furniture.Type,
-                    AnimalType = e.Animal.Type,
-                    CategoryName = e.Category.Name
-                })
+                .ProjectTo<EstateServiceModel>(this.mapper)
                 .ToList();
     }
 }

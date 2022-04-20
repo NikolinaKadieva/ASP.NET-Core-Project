@@ -27,6 +27,8 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int FurnitureId { get; set; }
 
         public Furniture Furniture { get; init; }

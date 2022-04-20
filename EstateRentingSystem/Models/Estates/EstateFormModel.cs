@@ -5,7 +5,7 @@
     using EstateRentingSystem.Services.Estates.Models;
 
     using static Data.DataConstants.Estate;
-    public class EstateFormModel
+    public class EstateFormModel : IEstateModel
     {
         [Required]
         [StringLength(TypeMaxLength, MinimumLength = TypeMinLength)]

@@ -1,4 +1,4 @@
-﻿namespace EstateRentingSystem.Infrastructure
+﻿namespace EstateRentingSystem.Infrastructure.Extensions
 {
     using System.Security.Claims;
 

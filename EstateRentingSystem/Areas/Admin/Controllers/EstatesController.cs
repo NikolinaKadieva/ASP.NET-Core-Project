@@ -1,9 +1,25 @@
 ﻿namespace EstateRentingSystem.Areas.Admin.Controllers
 {
+    using EstateRentingSystem.Services.Estates;
     using Microsoft.AspNetCore.Mvc;
 
-    public abstract class EstatesController : AdminController
+    public class EstatesController : AdminController
     {
-        public IActionResult Index() => View();
+        private readonly IEstateService estates;
+
+        public EstatesController(IEstateService estates) => this.estates = estates;
+
+        public IActionResult All()
+        {
+            var estates = this.estates.All(publicOnly: false).Estates;
+            return View(estates);
+        }
+
+        public IActionResult ChangeVisibility(int id)
+        {
+            this.estates.ChangeVisibility(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

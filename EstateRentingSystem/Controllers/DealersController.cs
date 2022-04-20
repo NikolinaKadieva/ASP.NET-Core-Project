@@ -3,11 +3,12 @@
     using System.Linq;
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
-    using EstateRentingSystem.Infrastructure;
+    using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Models.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using static WebConstants;
     public class DealersController : Controller
     {
         private readonly EstateRentingDbContext data;
@@ -48,6 +49,8 @@
 
             this.data.Dealers.Add(dealerData);
             this.data.SaveChanges();
+
+            TempData[GlobalMessageKey] = "Thank you for becomming a dealer!";
 
             return RedirectToAction("All", "Estates");
         }

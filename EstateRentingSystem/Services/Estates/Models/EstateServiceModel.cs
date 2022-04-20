@@ -1,6 +1,6 @@
 ﻿namespace EstateRentingSystem.Services.Estates.Models
 {
-    public class EstateServiceModel
+    public class EstateServiceModel : IEstateModel
     {
         public int Id { get; init; }
 
@@ -19,5 +19,7 @@
         public string AnimalType { get; init; }
 
         public string CategoryName { get; init; }
+
+        public bool IsPublic { get; init; }
     }
 }

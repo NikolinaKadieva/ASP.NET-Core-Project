@@ -12,7 +12,7 @@
 
         public StatisticsServiceModel Total()
         {
-            var totalEstates = this.data.Estates.Count();
+            var totalEstates = this.data.Estates.Count(e => e.IsPublic);
             var totalUsers = this.data.Users.Count();
 
             return new StatisticsServiceModel

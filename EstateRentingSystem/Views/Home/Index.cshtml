@@ -1,10 +1,10 @@
-﻿@model IndexViewModel
+﻿@model List<LatestEstateServiceModel>
 
 @{
     ViewBag.Title = "Welcome!";
 }
 
-@if (!Model.Estates.Any())
+@if (!Model.Any())
 {
 <div class="jumbotron">
     <h1 class="display-4">Welcome to the best place for renting estates!</h1>
@@ -20,13 +20,13 @@
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-        @for(int i = 0; i < Model.Estates.Count; i++)
+        @for(int i = 0; i < Model.Count; i++)
         {
-            var estate = Model.Estates[i];
+            var estate = Model[i];
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img class="d-block w-100" src="@estate.ImageUrl" alt="@estate.Type @estate.TypeOfConstruction">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id">@estate.Type @estate.TypeOfConstruction (@estate.YearOfConstruction)</a></h5>
+                    <h5><a class="btn btn-primary" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" asp-route-information="@estate.GetInformation()">@estate.Type @estate.TypeOfConstruction (@estate.YearOfConstruction)</a></h5>
                 </div>
             </div>
         }

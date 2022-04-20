@@ -2,7 +2,7 @@ namespace EstateRentingSystem
 {
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
-    using EstateRentingSystem.Infrastructure;
+    using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Services.Dealers;
     using EstateRentingSystem.Services.Estates;
     using EstateRentingSystem.Services.Statistics;
@@ -42,6 +42,8 @@ namespace EstateRentingSystem
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddMemoryCache();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
@@ -76,6 +78,12 @@ namespace EstateRentingSystem
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultAreaRoute();
+
+                    endpoints.MapControllerRoute(
+                        name: "Estate Details",
+                        pattern: "/Estates/Details/{id}/{information}",
+                        defaults: new { controller = "Estates", action = "Details" });
+
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

@@ -12,10 +12,10 @@
     var userIsDealer = Dealers.IsDealer(userId);
     var userIsAdmin = User.IsAdmin();
 
-    @if (userIsDealer && !userIsAdmin)
+        @if (userIsDealer && !userIsAdmin)
         {
             <li class="nav-item">
-               <a  class="nav-link text-dark" asp-area="" asp-controller="Estates" asp-action="Mine">My Estates</a>
+                <a  class="nav-link text-dark" asp-area="" asp-controller="Estates" asp-action="Mine">My Estates</a>
             </li>
         }
         else if (!userIsAdmin)
@@ -24,7 +24,13 @@
                 <a  class="nav-link text-dark" asp-area="" asp-controller="Dealers" asp-action="Become">Become Dealer</a>
             </li>
         }
-    <li class="nav-item">
+        else if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Estates" asp-action="All">Administration</a>
+            </li>
+        }
+        <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
     </li>
     <li class="nav-item">

@@ -1,6 +1,6 @@
 namespace EstateRentingSystem.Services.Estates.Models
 {
-    public class LatestEstateServiceModel
+    public class LatestEstateServiceModel : EstateServiceModel
     {
         public int Id { get; init; }
 

@@ -7,11 +7,12 @@
     public interface IEstateService
     {
         EstateQueryServiceModel All(
-            string type,
-            string searchTerm,
-            EstateSorting sorting,
-            int currentPage,
-            int estatesPerPage);
+            string type = null,
+            string searchTerm = null,
+            EstateSorting sorting = EstateSorting.DateCreated,
+            int currentPage = 1,
+            int estatesPerPage = int.MaxValue,
+            bool publicOnly = true);
 
         IEnumerable<LatestEstateServiceModel> Latest();
         EstateDetailsServiceModel Details(int estateId);
@@ -38,11 +39,14 @@
             string imageUrl,
             int furnitureId,
             int animalId,
-            int categoryId);
+            int categoryId,
+            bool isPublic);
 
         IEnumerable<EstateServiceModel> ByUser(string userId);
 
         bool IsByDealer(int estateId, int dealerId);
+
+        void ChangeVisibility(int estateId);
 
         IEnumerable<string> AllTypes();
 
