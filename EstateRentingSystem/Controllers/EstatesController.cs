@@ -131,6 +131,7 @@
                 estate.YearOfConstruction,
                 estate.Squaring,
                 estate.ImageUrl,
+                estate.Price,
                 estate.FurnitureId,
                 estate.AnimalId,
                 estate.CategoryId,
@@ -200,7 +201,7 @@
                 return BadRequest();
             }
 
-            this.estates.Edit(
+            var editedEstate = this.estates.Edit(
                 id,
                 estate.Type,
                 estate.TypeOfConstruction,
@@ -208,14 +209,28 @@
                 estate.YearOfConstruction,
                 estate.Squaring,
                 estate.ImageUrl,
+                estate.Price,
                 estate.FurnitureId,
                 estate.AnimalId,
                 estate.CategoryId,
                 this.User.IsAdmin());
 
+            if (!editedEstate)
+            {
+                return BadRequest();
+            }
+
             TempData[GlobalMessageKey] = $"{(this.User.IsAdmin() ? "The estate is edited successfully!" : "Your estate was edited successfully and is waiting to be approve by administrator!")}";
 
             return RedirectToAction(nameof(Details), new { id, information = estate.GetInformation() });
+        }
+
+        [Authorize]
+        public IActionResult AddEstateForRent(int estateId)
+        {
+            this.estates.ChangeAvailability(estateId);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

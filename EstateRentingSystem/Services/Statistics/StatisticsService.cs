@@ -14,11 +14,13 @@
         {
             var totalEstates = this.data.Estates.Count(e => e.IsPublic);
             var totalUsers = this.data.Users.Count();
+            var totalRents = this.data.Estates.Count(e => !e.IsAvailable);
 
             return new StatisticsServiceModel
             {
                 TotalEstates = totalEstates,
-                TotalUsers = totalUsers
+                TotalUsers = totalUsers,
+                TotalRents = totalRents
             };
         }
     }

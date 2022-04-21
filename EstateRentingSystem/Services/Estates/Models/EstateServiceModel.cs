@@ -21,5 +21,9 @@
         public string CategoryName { get; init; }
 
         public bool IsPublic { get; init; }
+
+        public bool IsAvailable { get; init; }
+
+        public int Price { get; init; }
     }
 }

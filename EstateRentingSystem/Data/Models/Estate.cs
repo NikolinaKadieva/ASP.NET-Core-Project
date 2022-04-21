@@ -29,6 +29,10 @@
 
         public bool IsPublic { get; set; }
 
+        public bool IsAvailable { get; set; }
+
+        public int Price { get; set; }
+
         public int FurnitureId { get; set; }
 
         public Furniture Furniture { get; init; }

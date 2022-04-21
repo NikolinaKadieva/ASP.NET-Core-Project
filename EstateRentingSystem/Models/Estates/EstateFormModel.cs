@@ -35,6 +35,11 @@
         [Display(Name = "Image URL")]
         public string ImageUrl { get; init; }
 
+        [Required]
+        [Display(Name = "Price for rent per month")]
+        [Range(PriceMinValue, PriceMaxValue)]
+        public int Price { get; init; }
+
         [Display(Name = "Type of furniture")]
         public int FurnitureId { get; init; }
 

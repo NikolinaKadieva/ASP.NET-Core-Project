@@ -83,7 +83,18 @@
                 .ProjectTo<EstateDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
 
-        public int Create(string type, string typeOfConstruction, string description, int yearOfConstruction, int squaring, string imageUrl, int furnitureId, int animalId, int categoryId, int dealerId)
+        public int Create(
+            string type, 
+            string typeOfConstruction, 
+            string description,
+            int yearOfConstruction, 
+            int squaring,
+            string imageUrl, 
+            int price,
+            int furnitureId,
+            int animalId, 
+            int categoryId, 
+            int dealerId)
         {
             var estateData = new Estate
             {
@@ -93,6 +104,8 @@
                 YearOfConstruction = yearOfConstruction,
                 Squaring = squaring,
                 ImageUrl = imageUrl,
+                Price = price,
+                IsAvailable = true,
                 FurnitureId = furnitureId,
                 AnimalId = animalId,
                 CategoryId = categoryId,
@@ -113,7 +126,9 @@
             string typeOfConstruction,
             string description,
             int yearOfConstruction, 
-            int squaring, string imageUrl,
+            int squaring, 
+            string imageUrl,
+            int price,
             int furnitureId,
             int animalId, 
             int categoryId,
@@ -132,6 +147,7 @@
             estateData.YearOfConstruction = yearOfConstruction;
             estateData.Squaring = squaring;
             estateData.ImageUrl = imageUrl;
+            estateData.Price = price;
             estateData.FurnitureId = furnitureId;
             estateData.AnimalId = animalId;
             estateData.CategoryId = categoryId;
@@ -157,6 +173,15 @@
             var estate = this.data.Estates.Find(estateId);
 
             estate.IsPublic = !estate.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
+        public void ChangeAvailability(int estateId)
+        {
+            var estate = this.data.Estates.Find(estateId);
+
+            estate.IsAvailable = false;
 
             this.data.SaveChanges();
         }

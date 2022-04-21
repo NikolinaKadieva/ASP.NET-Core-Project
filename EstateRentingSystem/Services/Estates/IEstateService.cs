@@ -24,6 +24,7 @@
             int yearOfConstruction,
             int squaring,
             string imageUrl,
+            int price,
             int furnitureId,
             int animalId,
             int categoryId,
@@ -37,6 +38,7 @@
             int yearOfConstruction,
             int squaring,
             string imageUrl,
+            int price,
             int furnitureId,
             int animalId,
             int categoryId,
@@ -47,6 +49,8 @@
         bool IsByDealer(int estateId, int dealerId);
 
         void ChangeVisibility(int estateId);
+
+        void ChangeAvailability(int estateId);
 
         IEnumerable<string> AllTypes();
 

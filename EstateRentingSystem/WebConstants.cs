@@ -6,7 +6,7 @@
 
         public class Cache
         {
-            public const string LatestCarsCacheKey = nameof(LatestCarsCacheKey);
+            public const string LatestEstatesCacheKey = nameof(LatestEstatesCacheKey);
         }
     }
 }

@@ -20,6 +20,8 @@
             public const int YearOfConstructionMaxValue = 2050;
             public const int SquaringMinValue = 25;
             public const int SquaringMaxValue = 500;
+            public const int PriceMinValue = 0;
+            public const int PriceMaxValue = 1000;
         }
 
         public class Category

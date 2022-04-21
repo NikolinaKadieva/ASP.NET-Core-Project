@@ -1,5 +1,53 @@
 ﻿@model EstateDetailsServiceModel
 
-<div class="col-md-6 offset-3">
-	<h2>@Model.Type @Model.TypeOfConstruction</h2>
-</div>
+<section class="py-5">
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">@Model.Type</h1>
+        <div>
+            <div class="form-group text-center">
+                <img src="@Model.ImageUrl" width="600" height="300" class="img-fluid">
+            </div>
+            <div class="form-group">
+                <label for="typeOfConstruction">Type of construction</label>
+                <input type="text" readonly class="form-control" id="typeOfConstruction" name="TypeOfConstruction" value="@Model.TypeOfConstruction">
+            </div>
+            <div class="form-group">
+                <label for="yearOfConstruction">Year of construction</label>
+                <input type="text" readonly class="form-control" id="yearOfConstruction" name="YearOfConstruction" value="@Model.YearOfConstruction">
+            </div>
+            <div class="form-group">
+                <label for="squaring">Squaring</label>
+                <input type="number" readonly class="form-control" id="squaring" name="Squaring" value="@Model.Squaring">
+            </div>
+             <div class="form-group">
+                <label for="price">Price for rent per month</label>
+                <input type="number" readonly class="form-control" id="price" name="Price" value="@Model.Price">
+            </div>
+            <div class="form-group">
+                <label for="funrinureType">Furniture type</label>
+                <input type="text" readonly class="form-control" id="funrinureType" value="@Model.FurnitureType">
+            </div>
+            <div class="form-group">
+                <label for="animalType">Animal type</label>
+                <input type="text" readonly class="form-control" id="animalType" value="@Model.AnimalType">
+            </div>
+            <div class="form-group">
+                <label for="categoryName">Category</label>
+                <input type="text" readonly class="form-control" id="categoryName" value="@Model.CategoryName">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" readonly class="form-control" id="description" name="Description" value="@Model.Description">
+            </div>
+            <div class="form-group text-center">
+                <div class="button-holder">
+                    <a href="/Dealers/Contacts?dealerId=@Model.DealerId" class="btn btn-primary btn-block text-uppercase">Contact the Dealer @Model.DealerName</a>
+                    @if (@Model.IsAvailable)
+                    {
+                    <a href="/Estates/AddEstateForRent?estateId=@Model.Id" class="btn btn-primary btn-block text-uppercase">Save for rent</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -52,7 +52,19 @@
 
             TempData[GlobalMessageKey] = "Thank you for becomming a dealer!";
 
-            return RedirectToAction("All", "Estates");
+            return RedirectToAction(nameof(EstatesController.All), "Estates");
+        }
+
+        [Authorize]
+        public IActionResult Contacts(int dealerId)
+        {
+            var dealer = this.data.Dealers.Where(d => d.Id == dealerId).Select(x => new ContactDealerFormModel
+            {
+                Name = x.Name,
+                PhoneNumber= x.PhoneNumber
+            }).FirstOrDefault();
+
+            return View(dealer);
         }
     }
 }

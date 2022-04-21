@@ -1,6 +1,6 @@
 namespace EstateRentingSystem.Services.Estates.Models
 {
-    public class LatestEstateServiceModel : EstateServiceModel
+    public class LatestEstateServiceModel : IEstateModel
     {
         public int Id { get; init; }
 
@@ -13,5 +13,7 @@ namespace EstateRentingSystem.Services.Estates.Models
         public int Squaring { get; init; }
 
         public string ImageUrl { get; init; }
+
+        public int Price { get; init; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using EstateRentingSystem.Services.Estates;
@@ -7,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
 
+    using static WebConstants.Cache;
     public class HomeController : Controller
     {
         private readonly IEstateService estates;
@@ -22,8 +24,6 @@
 
         public IActionResult Index()
         {
-            const string LatestEstatesCacheKey = "LatesteEstatesCacheKey";
-
             var latestEstates = this.cache.Get<List<LatestEstateServiceModel>>(LatestEstatesCacheKey);
 
             if (latestEstates == null)
@@ -33,7 +33,7 @@
                     .ToList();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(System.TimeSpan.FromMinutes(15));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
                 this.cache.Set(LatestEstatesCacheKey, latestEstates, cacheOptions);
             }
