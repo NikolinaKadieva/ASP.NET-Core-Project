@@ -80,7 +80,7 @@
 
 @if (!Model.Estates.Any())
 {
-    <h2 class="text-center">No estates found by the given criteria!</h2>
+    <h2 class="text-center text-warning">No estates found by the given criteria!</h2>
 }
 
 <partial name="_EstatesPartial" model="@Model.Estates" />

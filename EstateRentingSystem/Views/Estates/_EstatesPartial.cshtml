@@ -3,7 +3,7 @@
 <div id="allEstates" class="row">
     @foreach (var estate in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 mt-3">
             <div class="card mb-3">
             <img class="card-img-top img-fluid card-image rounded" data-togg="toleoltip" data-placement="bottom" title="In this estate are @estate.AnimalType and this estate is @estate.FurnitureType" src="@estate.ImageUrl" alt="@estate.Type @estate.TypeOfConstruction - @estate.Price&euro; - @estate.YearOfConstruction (@estate.CategoryName)">
             <div class="card-body text-center">

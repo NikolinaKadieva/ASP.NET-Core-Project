@@ -1,58 +1,140 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title - Best Estate Renting System</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewBag.Title - Nikol Estate`s Renting System</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Estate Renting</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (!User.IsAdmin())
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Estates" asp-action="Add">Add Estate</a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Estates" asp-action="All">All Estates</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        @if(TempData.ContainsKey(WebConstants.GlobalMessageKey))
-        {
-            <div class="alert alert-primary text-center" role="alert">
-                @TempData[WebConstants.GlobalMessageKey]
-            </div>
-        }
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container">
+				<canvas id="canvas" width="40" height="40"
+						style="background-color:#7FFFD4">
+				</canvas>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.UtcNow.Year - Estate Renting System
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+				<script>
+					var canvas = document.getElementById("canvas");
+					var ctx = canvas.getContext("2d");
+					var radius = canvas.height / 2;
+					ctx.translate(radius, radius);
+					radius = radius * 0.90
+					setInterval(drawClock, 1000);
+
+					function drawClock() {
+					  drawFace(ctx, radius);
+					  drawNumbers(ctx, radius);
+					  drawTime(ctx, radius);
+					}
+
+					function drawFace(ctx, radius) {
+					  var grad;
+					  ctx.beginPath();
+					  ctx.arc(0, 0, radius, 0, 2*Math.PI);
+					  ctx.fillStyle = 'white';
+					  ctx.fill();
+					  grad = ctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
+					  grad.addColorStop(0, '#00CED1');
+					  grad.addColorStop(0.5, 'white');
+					  grad.addColorStop(1, '#00CED1');
+					  ctx.strokeStyle = grad;
+					  ctx.lineWidth = radius*0.1;
+					  ctx.stroke();
+					  ctx.beginPath();
+					  ctx.arc(0, 0, radius*0.1, 0, 2*Math.PI);
+					  ctx.fillStyle = '#00CED1';
+					  ctx.fill();
+					}
+
+					function drawNumbers(ctx, radius) {
+					  var ang;
+					  var num;
+					  ctx.font = radius*0.15 + "px arial";
+					  ctx.textBaseline="middle";
+					  ctx.textAlign="center";
+					  for(num = 1; num < 13; num++){
+						ang = num * Math.PI / 6;
+						ctx.rotate(ang);
+						ctx.translate(0, -radius*0.85);
+						ctx.rotate(-ang);
+						ctx.fillText(num.toString(), 0, 0);
+						ctx.rotate(ang);
+						ctx.translate(0, radius*0.85);
+						ctx.rotate(-ang);
+					  }
+					}
+
+					function drawTime(ctx, radius){
+						var now = new Date();
+						var hour = now.getHours();
+						var minute = now.getMinutes();
+						var second = now.getSeconds();
+						//hour
+						hour=hour%12;
+						hour=(hour*Math.PI/6)+
+						(minute*Math.PI/(6*60))+
+						(second*Math.PI/(360*60));
+						drawHand(ctx, hour, radius*0.5, radius*0.07);
+						//minute
+						minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+						drawHand(ctx, minute, radius*0.8, radius*0.07);
+						// second
+						second=(second*Math.PI/30);
+						drawHand(ctx, second, radius*0.9, radius*0.02);
+					}
+
+					function drawHand(ctx, pos, length, width) {
+						ctx.beginPath();
+						ctx.lineWidth = width;
+						ctx.lineCap = "round";
+						ctx.moveTo(0,0);
+						ctx.rotate(pos);
+						ctx.lineTo(0, -length);
+						ctx.stroke();
+						ctx.rotate(-pos);
+					}
+				</script>
+				<a class="navbar-brand ml-3" asp-area="" asp-controller="Home" asp-action="Index">Estate Rentings By Nikol</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contacts">Contacts</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Estates" asp-action="All">All Estates</a>
+						</li>
+					</ul>
+					<partial name="_LoginPartial" />
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		@if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+		{
+			<div class="alert alert-primary text-center" role="alert">
+				@TempData[WebConstants.GlobalMessageKey]
+			</div>
+		}
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; @DateTime.UtcNow.Year - Estate Renting System
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

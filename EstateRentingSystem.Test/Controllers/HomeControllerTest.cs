@@ -23,7 +23,7 @@
                 .MemoryCache(cache => cache
                     .ContainingEntry(entry => entry
                         .WithKey(LatestEstatesCacheKey)
-                        .WithAbsoluteExpirationRelativeToNow(TimeSpan.FromMinutes(15))
+                        .WithAbsoluteExpirationRelativeToNow(TimeSpan.FromMinutes(10))
                         .WithValueOfType<List<LatestEstateServiceModel>>()))
                 .AndAlso()
                 .ShouldReturn()

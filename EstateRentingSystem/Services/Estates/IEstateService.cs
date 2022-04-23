@@ -16,6 +16,9 @@
 
         IEnumerable<LatestEstateServiceModel> Latest();
         EstateDetailsServiceModel Details(int estateId);
+        EstateDeleteServiceModel Delete(int estateId);
+
+        public void DeleteConfirmed(int id);
 
         int Create(
             string type,
@@ -45,6 +48,7 @@
             bool isPublic);
 
         IEnumerable<EstateServiceModel> ByUser(string userId);
+        IEnumerable<EstateServiceModel> ByRenter(string userId);
 
         bool IsByDealer(int estateId, int dealerId);
 

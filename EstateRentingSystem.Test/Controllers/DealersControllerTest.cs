@@ -12,7 +12,7 @@
     public class DealersControllerTest
     {
         [Fact]
-        public void GetBecomeDealerShouldBeForAuthorizedUsersAndReturnView()
+        public void GetBecomeDealerShouldBeForAuthorizedUsers()
             => MyController<DealersController>
                 .Instance()
                 .Calling(c => c.Become())

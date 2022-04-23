@@ -15,6 +15,8 @@
 
         public DbSet<Dealer> Dealers { get; init; }
 
+        public DbSet<Renter> Renters { get; init; }
+
         public DbSet<Furniture> Furnitures { get; init; }
 
         public DbSet<Animal> Animals { get; init; }
@@ -40,6 +42,13 @@
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Dealer>(d => d.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Renter>()
+                .HasOne<User>()
+                .WithOne()
+                .HasForeignKey<Renter>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

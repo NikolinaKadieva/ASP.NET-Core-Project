@@ -8,5 +8,7 @@
     {
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
+
+       // public string RenterId { get; set; }
     }
 }

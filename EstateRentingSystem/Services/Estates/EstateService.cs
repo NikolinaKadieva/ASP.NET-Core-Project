@@ -7,6 +7,7 @@
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Models;
+    using EstateRentingSystem.Models.Renters;
     using EstateRentingSystem.Services.Estates.Models;
 
     public class EstateService : IEstateService
@@ -82,6 +83,20 @@
                 .Where(e => e.Id == id)
                 .ProjectTo<EstateDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
+
+        public EstateDeleteServiceModel Delete(int id)
+           => this.data
+               .Estates
+               .Where(e => e.Id == id)
+               .ProjectTo<EstateDeleteServiceModel>(this.mapper)
+               .FirstOrDefault();
+
+        public void DeleteConfirmed(int id)
+        {
+            var estate = this.data.Estates.Find(id);
+            this.data.Estates.Remove(estate);
+            this.data.SaveChanges();
+        }
 
         public int Create(
             string type, 
@@ -163,6 +178,11 @@
                 .Estates
                 .Where(e => e.Dealer.UserId == userId));
 
+        public IEnumerable<EstateServiceModel> ByRenter(string userId)
+            => GetEstates(this.data
+                 .Estates
+                .Where(e => e.Renter.UserId == userId));
+
         public bool IsByDealer(int estateId, int dealerId)
             => this.data
                 .Estates
@@ -180,7 +200,8 @@
         public void ChangeAvailability(int estateId)
         {
             var estate = this.data.Estates.Find(estateId);
-
+            var renterId = this.data.Renters.Select(r => r.Id).FirstOrDefault();
+            estate.RenterId = renterId;
             estate.IsAvailable = false;
 
             this.data.SaveChanges();

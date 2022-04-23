@@ -1,0 +1,12 @@
+﻿@model IEnumerable<EstateServiceModel>
+
+@{
+    ViewBag.Title = "My Rents";
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center text-primary">You do not have any rents yet!</h2>
+}
+
+<partial name="_EstatesPartial" model="@Model" />

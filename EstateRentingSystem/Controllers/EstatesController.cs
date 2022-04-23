@@ -9,20 +9,24 @@
     using AutoMapper;
 
     using static WebConstants;
+    using EstateRentingSystem.Services.Renters;
 
     public class EstatesController : Controller
     {
         private readonly IEstateService estates;
         private readonly IDealerService dealers;
+        private readonly IRenterService renters;
         private readonly IMapper mapper;
 
         public EstatesController(
             IEstateService estates,
             IDealerService dealers,
+            IRenterService renters,
             IMapper mapper)
         {
             this.estates = estates;
             this.dealers = dealers;
+            this.renters = renters;
             this.mapper = mapper;
         }
 
@@ -52,6 +56,15 @@
             return View(myEstates);
         }
 
+        [Authorize]
+        public IActionResult Rents()
+        {
+            var myEstates = this.estates.ByRenter(this.User.Id());
+
+            return View(myEstates);
+        }
+
+        [Authorize]
         public IActionResult Details(int id, string information)
         {
             var estate = this.estates.Details(id);
@@ -62,6 +75,30 @@
             }
 
             return View(estate);
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var estate = this.estates.Delete(id);
+
+            //if (information != estate.GetInformation())
+            //{
+            //    return BadRequest();
+            //}
+
+            return View(estate);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [Authorize]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            this.estates.DeleteConfirmed(id);
+
+            TempData[GlobalMessageKey] = $"{(this.User.IsAdmin() ? "The estate is deleted successfully by administrator!" : "Your estate was deleted successfully!")}";
+
+            return RedirectToAction(nameof(All));
         }
 
         [Authorize]
@@ -228,7 +265,26 @@
         [Authorize]
         public IActionResult AddEstateForRent(int estateId)
         {
+            if (!this.renters.IsRenter(this.User.Id()))
+            {
+                return RedirectToAction(nameof(RentersController.Become), "Renters");
+            }
+
+            var renterId = this.renters.IdByUser(this.User.Id());
+
+            if (renterId == 0)
+            {
+                return RedirectToAction(nameof(RentersController.Become), "Renters");
+            }
+
+            //if (this.estates.IsByDealer(estateId, renterId) && !User.IsAdmin())
+            //{
+            //    return BadRequest();
+            //}
+
             this.estates.ChangeAvailability(estateId);
+
+            TempData[GlobalMessageKey] = "You save this estate for rent successfully!";
 
             return RedirectToAction(nameof(All));
         }

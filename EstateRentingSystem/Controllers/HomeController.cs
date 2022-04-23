@@ -33,12 +33,17 @@
                     .ToList();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
 
                 this.cache.Set(LatestEstatesCacheKey, latestEstates, cacheOptions);
             }
 
             return View(latestEstates);
+        }
+
+        public IActionResult Contacts()
+        {
+            return View();
         }
 
         public IActionResult Error() => View();

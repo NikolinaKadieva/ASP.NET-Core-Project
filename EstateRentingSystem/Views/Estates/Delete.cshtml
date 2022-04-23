@@ -1,0 +1,103 @@
+﻿@model EstateDeleteServiceModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container">
+    <dl class="row">
+        <dt class="col-sm-8">
+        </dt>
+        <dd class="col-sm-4">
+
+        </dd>
+        <dt class="col-sm-8">
+            <h2 class="text-black-50">Are you sure you want to delete this Estate?</h2>
+            <hr/>
+        </dt>
+        <dd class="col-sm-4">
+        </dd>
+        <dt class="col-sm-8">
+            
+                <div class="col justify-content-center">
+
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            <label asp-for="Type"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.Type
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="TypeOfConstruction"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.TypeOfConstruction
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="YearOfConstruction"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.YearOfConstruction
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="Squaring"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.Squaring
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="Price"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.Price
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="FurnitureType"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.FurnitureType
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="AnimalType"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.AnimalType
+                        </dd>
+                         <dt class="col-sm-6">
+                            <label asp-for="CategoryName"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.CategoryName
+                        </dd>
+                        <dt class="col-sm-6">
+                            <label asp-for="Description"></label>
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Model.Description
+                        </dd>
+                    </dl>
+                </div>
+            
+        </dt>
+        <dd class="col-sm-4">
+            <div class="shadow-sm " style="width: 100%; height: auto;">
+                <img src="@Model.ImageUrl" style="display: block; margin: 0 auto; width: 100%" />
+            </div>
+        </dd>
+        <dt class="col-sm-8"></dt>
+        <dd class="col-sm-4">
+            <form class="float-right" asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+        </dd>
+    </dl>
+</div>
+<hr />
+<div class="container">
+    <div>
+        <a class="float-right" asp-action="Mine" asp-route-id="@Model.Id">My Estates</a>
+    </div>
+</div>
+

@@ -11,7 +11,6 @@
         [MaxLength(TypeMaxLength)]
         public string Type { get; set; }
         
-
         [Required]
         [MaxLength(TypeOfConstructionMaxLength)]
         public string TypeOfConstruction { get; set; }
@@ -48,5 +47,9 @@
         public int DealerId { get; init; }
 
         public Dealer Dealer { get; init; }
+
+        public int? RenterId { get; set; }
+
+        public Renter Renter { get; init; }
     }
 }

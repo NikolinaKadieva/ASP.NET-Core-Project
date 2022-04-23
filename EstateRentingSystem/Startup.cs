@@ -5,6 +5,7 @@ namespace EstateRentingSystem
     using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Services.Dealers;
     using EstateRentingSystem.Services.Estates;
+    using EstateRentingSystem.Services.Renters;
     using EstateRentingSystem.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -51,6 +52,7 @@ namespace EstateRentingSystem
 
             services.AddTransient<IEstateService, EstateService>();
             services.AddTransient<IDealerService, DealerService>();
+            services.AddTransient<IRenterService, RenterService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
         }
 

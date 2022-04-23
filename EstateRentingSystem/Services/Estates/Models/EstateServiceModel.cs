@@ -25,5 +25,7 @@
         public bool IsAvailable { get; init; }
 
         public int Price { get; init; }
+
+        public int RenterId { get; init; }
     }
 }

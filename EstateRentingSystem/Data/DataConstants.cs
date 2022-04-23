@@ -46,7 +46,13 @@
             public const int PhoneNumberMinLength = 6;
             public const int PhoneNumberMaxLength = 30;
         }
-        
-        
+
+        public class Renter
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 25;
+            public const int PhoneNumberMinLength = 6;
+            public const int PhoneNumberMaxLength = 30;
+        }
     }
 }

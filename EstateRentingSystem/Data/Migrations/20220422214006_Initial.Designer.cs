@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstateRentingSystem.Data.Migrations
 {
     [DbContext(typeof(EstateRentingDbContext))]
-    [Migration("20220421201059_IsAvailableAndPriceColumnsAddesToEstateTable")]
-    partial class IsAvailableAndPriceColumnsAddesToEstateTable
+    [Migration("20220422214006_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,6 +120,9 @@ namespace EstateRentingSystem.Data.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RenterId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Squaring")
                         .HasColumnType("int");
 
@@ -146,6 +149,8 @@ namespace EstateRentingSystem.Data.Migrations
 
                     b.HasIndex("FurnitureId");
 
+                    b.HasIndex("RenterId");
+
                     b.ToTable("Estates");
                 });
 
@@ -164,6 +169,35 @@ namespace EstateRentingSystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Furnitures");
+                });
+
+            modelBuilder.Entity("EstateRentingSystem.Data.Models.Renter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Renters");
                 });
 
             modelBuilder.Entity("EstateRentingSystem.Data.Models.User", b =>
@@ -405,6 +439,10 @@ namespace EstateRentingSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("EstateRentingSystem.Data.Models.Renter", "Renter")
+                        .WithMany("Estates")
+                        .HasForeignKey("RenterId");
+
                     b.Navigation("Animal");
 
                     b.Navigation("Category");
@@ -412,6 +450,17 @@ namespace EstateRentingSystem.Data.Migrations
                     b.Navigation("Dealer");
 
                     b.Navigation("Furniture");
+
+                    b.Navigation("Renter");
+                });
+
+            modelBuilder.Entity("EstateRentingSystem.Data.Models.Renter", b =>
+                {
+                    b.HasOne("EstateRentingSystem.Data.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("EstateRentingSystem.Data.Models.Renter", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -481,6 +530,11 @@ namespace EstateRentingSystem.Data.Migrations
                 });
 
             modelBuilder.Entity("EstateRentingSystem.Data.Models.Furniture", b =>
+                {
+                    b.Navigation("Estates");
+                });
+
+            modelBuilder.Entity("EstateRentingSystem.Data.Models.Renter", b =>
                 {
                     b.Navigation("Estates");
                 });
