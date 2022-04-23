@@ -21,5 +21,7 @@
         public IEnumerable<string> Types { get; set; }
 
         public IEnumerable<EstateServiceModel> Estates { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }

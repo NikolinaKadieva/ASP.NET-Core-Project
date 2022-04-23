@@ -4,6 +4,6 @@
     {
         DateCreated = 0,
         Year = 1,
-        Type = 2
+        Price = 2
     }
 }

@@ -49,7 +49,7 @@
             {
 
                 EstateSorting.Year => estatesQuery.OrderByDescending(e => e.YearOfConstruction),
-                EstateSorting.Type => estatesQuery.OrderBy(e => e.Type),
+                EstateSorting.Price => estatesQuery.OrderBy(e => e.Price),
                 EstateSorting.DateCreated or _ => estatesQuery.OrderByDescending(e => e.Id)
             };
 

@@ -82,11 +82,6 @@
         {
             var estate = this.estates.Delete(id);
 
-            //if (information != estate.GetInformation())
-            //{
-            //    return BadRequest();
-            //}
-
             return View(estate);
         }
 
@@ -132,6 +127,7 @@
             {
                 this.ModelState.AddModelError(nameof(estate.CategoryId), "Category does not exist.");
             }
+
             if (!ModelState.IsValid)
             {
                 estate.Categories = this.estates.AllCategories();
@@ -143,6 +139,7 @@
             {
                 this.ModelState.AddModelError(nameof(estate.FurnitureId), "Furniture does not exist.");
             }
+
             if (!ModelState.IsValid)
             {
                 estate.Furnitures = this.estates.AllFurnitures();
@@ -154,6 +151,7 @@
             {
                 this.ModelState.AddModelError(nameof(estate.AnimalId), "Animal does not exist.");
             }
+
             if (!ModelState.IsValid)
             {
                 estate.Animals = this.estates.AllAnimals();
@@ -222,6 +220,7 @@
             {
                 this.ModelState.AddModelError(nameof(estate.CategoryId), "Category does not exist.");
             }
+
             if (!ModelState.IsValid)
             {
                 estate.Categories = this.estates.AllCategories();
@@ -276,11 +275,6 @@
             {
                 return RedirectToAction(nameof(RentersController.Become), "Renters");
             }
-
-            //if (this.estates.IsByDealer(estateId, renterId) && !User.IsAdmin())
-            //{
-            //    return BadRequest();
-            //}
 
             this.estates.ChangeAvailability(estateId);
 

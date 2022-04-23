@@ -6,15 +6,24 @@
 
 @if (!Model.Any())
 {  
-    
-<div class="jumbotron">
-    <h1 class="display-4 text-primary">Welcome to the best place for renting estates!</h1>
-    <p class="lead text-warning">There are no estates in the system currently available, so why don't you just add one?</p>
-    <hr class="my-4">
-    <p class="lead">
-        <a asp-controller="Estates" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Estate</a>
-    </p>
-</div>
+    @if(!User.IsAdmin())
+    {
+        <div class="jumbotron">
+            <h1 class="display-4 text-primary text-center">Welcome to the best place for renting estates!</h1>
+            <p class="lead text-primary text-center">There are no estates in the system currently available, so why don't you just add one?</p>
+            <hr class="my-4">
+            <p class="lead text-center">
+                <a asp-controller="Estates" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Estate</a>
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron">
+            <h1 class="display-4 text-primary text-center">Welcome to Admin panel!</h1>
+            <p class="lead text-primary text-center text-font-weight-bold">Check your administration panel for new estates for approvement!</p>
+        </div>
+    }
 }
 <div class="mb-3"></div>
 
