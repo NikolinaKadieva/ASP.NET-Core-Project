@@ -2,6 +2,9 @@
 
 https://estaterentingsystem20220424132103.azurewebsites.net/
 
+Dealer Profile: nikol@nikol.com Password: 123456
+Renter Profile: test@test.com Password: 123456
+
 The Estate Renting System Project is a system for renting estates. The web application is created with Microsoft ASP.NET Core MVC and C# language, HTML 5, CSS 3, Bootstrap and Razor pages.
 •   The system support different types of users: Administrator, user who can choose whether to be dealer or renter
 
