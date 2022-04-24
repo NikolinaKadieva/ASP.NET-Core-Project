@@ -7,7 +7,6 @@
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Models;
-    using EstateRentingSystem.Models.Renters;
     using EstateRentingSystem.Services.Estates.Models;
 
     public class EstateService : IEstateService
