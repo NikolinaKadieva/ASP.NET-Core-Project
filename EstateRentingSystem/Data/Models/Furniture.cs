@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using static DataConstants.Furniture;
 
+    using static DataConstants.Furniture;
     public class Furniture
     {
         public int Id { get; init; }

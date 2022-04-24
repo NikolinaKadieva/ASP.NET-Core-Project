@@ -1,7 +1,6 @@
 ﻿namespace EstateRentingSystem.Models.Api.Estates
 {
     using EstateRentingSystem.Models;
-
     public class AllEstatesApiRequestModel
     {
         public string Type { get; init; }

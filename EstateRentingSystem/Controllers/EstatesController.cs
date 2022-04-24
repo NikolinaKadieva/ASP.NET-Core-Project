@@ -93,7 +93,7 @@
 
             TempData[GlobalMessageKey] = $"{(this.User.IsAdmin() ? "The estate is deleted successfully by administrator!" : "Your estate was deleted successfully!")}";
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Mine));
         }
 
         [Authorize]

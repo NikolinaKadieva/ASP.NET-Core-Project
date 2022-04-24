@@ -11,7 +11,6 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using static EstateRentingSystem.Areas.Admin.AdminConstants;
-
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(
