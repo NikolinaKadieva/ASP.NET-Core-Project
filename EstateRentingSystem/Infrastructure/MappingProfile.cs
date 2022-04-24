@@ -4,7 +4,7 @@
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Models.Estates;
     using EstateRentingSystem.Services.Estates.Models;
-    
+
     public class MappingProfile : Profile
     {
         public MappingProfile()

@@ -1,12 +1,12 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
     using System.Linq;
+    using Microsoft.AspNetCore.Mvc;
     using EstateRentingSystem.Data;
     using EstateRentingSystem.Data.Models;
     using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Models.Dealers;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
 
     using static WebConstants;
     public class DealersController : Controller

@@ -5,7 +5,6 @@
 
     [ApiController]
     [Route("api/statistics")]
-
     public class StatisticsApiController : ControllerBase
     {
         private readonly IStatisticsService statisctics;

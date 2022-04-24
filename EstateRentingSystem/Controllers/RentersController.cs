@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+
     using static WebConstants;
     public class RentersController : Controller
     {

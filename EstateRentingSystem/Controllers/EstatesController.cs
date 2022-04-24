@@ -1,16 +1,15 @@
 ﻿namespace EstateRentingSystem.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using AutoMapper;
     using EstateRentingSystem.Infrastructure.Extensions;
     using EstateRentingSystem.Models.Estates;
     using EstateRentingSystem.Services.Estates;
     using EstateRentingSystem.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using AutoMapper;
-
-    using static WebConstants;
     using EstateRentingSystem.Services.Renters;
 
+    using static WebConstants;
     public class EstatesController : Controller
     {
         private readonly IEstateService estates;

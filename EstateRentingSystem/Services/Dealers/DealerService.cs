@@ -6,7 +6,7 @@
     {
         private readonly EstateRentingDbContext data;
 
-        public DealerService(EstateRentingDbContext data) 
+        public DealerService(EstateRentingDbContext data)
             => this.data = data;
 
         public bool IsDealer(string userId)

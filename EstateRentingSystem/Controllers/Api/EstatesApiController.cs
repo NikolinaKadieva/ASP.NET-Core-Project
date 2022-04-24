@@ -1,9 +1,9 @@
 ﻿namespace EstateRentingSystem.Controllers.Api
 {
+    using Microsoft.AspNetCore.Mvc;
     using EstateRentingSystem.Models.Api.Estates;
     using EstateRentingSystem.Services.Estates;
     using EstateRentingSystem.Services.Estates.Models;
-    using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     [Route("api/estates")]

@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     public class EstateRentingDbContext : IdentityDbContext<User>
-{
+    {
         public EstateRentingDbContext(DbContextOptions<EstateRentingDbContext> options)
             : base(options)
         {
@@ -35,7 +35,7 @@
                 .HasOne(d => d.Dealer)
                 .WithMany(e => e.Estates)
                 .HasForeignKey(d => d.DealerId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<Dealer>()

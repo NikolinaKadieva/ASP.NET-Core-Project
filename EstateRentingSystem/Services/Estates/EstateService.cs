@@ -98,16 +98,16 @@
         }
 
         public int Create(
-            string type, 
-            string typeOfConstruction, 
+            string type,
+            string typeOfConstruction,
             string description,
-            int yearOfConstruction, 
+            int yearOfConstruction,
             int squaring,
-            string imageUrl, 
+            string imageUrl,
             int price,
             int furnitureId,
-            int animalId, 
-            int categoryId, 
+            int animalId,
+            int categoryId,
             int dealerId)
         {
             var estateData = new Estate
@@ -136,15 +136,15 @@
 
         public bool Edit(
             int id,
-            string type, 
+            string type,
             string typeOfConstruction,
             string description,
-            int yearOfConstruction, 
-            int squaring, 
+            int yearOfConstruction,
+            int squaring,
             string imageUrl,
             int price,
             int furnitureId,
-            int animalId, 
+            int animalId,
             int categoryId,
             bool isPublic)
         {

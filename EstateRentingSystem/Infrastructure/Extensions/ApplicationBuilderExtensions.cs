@@ -24,7 +24,7 @@
             SeedCategories(services);
             SeedAdministrator(services);
 
-            return app;        
+            return app;
         }
 
         private static void MigrateDatabase(IServiceProvider services)
@@ -34,7 +34,7 @@
             data.Database.Migrate();
         }
 
-        private static void SeedCategories(IServiceProvider services) 
+        private static void SeedCategories(IServiceProvider services)
         {
             var data = services.GetRequiredService<EstateRentingDbContext>();
 

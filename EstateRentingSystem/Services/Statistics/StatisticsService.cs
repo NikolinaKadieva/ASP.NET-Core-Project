@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using EstateRentingSystem.Data;
-
     public class StatisticsService : IStatisticsService
     {
         private readonly EstateRentingDbContext data;

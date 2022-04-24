@@ -7,7 +7,8 @@
     {
         private readonly IEstateService estates;
 
-        public EstatesController(IEstateService estates) => this.estates = estates;
+        public EstatesController(IEstateService estates) 
+            => this.estates = estates;
 
         public IActionResult All()
         {
