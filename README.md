@@ -34,8 +34,6 @@ The Estate Renting System Project is a system for renting estates. The web appli
 
 •   Areas (Administrator)
 
-•   Custom validation attributes
-
 •   Roles (User -> Client)
 
 •   Management by Administrator
