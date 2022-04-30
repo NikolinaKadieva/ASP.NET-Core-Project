@@ -57,6 +57,6 @@
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
-                    .To<EstatesController>(c => c.All(With.Any<AllEstatesQueryModel>())));
+                    .To<EstatesController>(c => c.Add(With.Any<EstateFormModel>())));
     }
 }
